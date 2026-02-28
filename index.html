@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ParkNav — Main Control</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ─── Variables ─────────────────────────────────────── */
+:root{
+  --bg:       #080c10;
+  --surface:  #0d1117;
+  --s2:       #131a22;
+  --s3:       #1a2332;
+  --border:   #21303f;
+  --border2:  #2d4156;
+  --text:     #cdd9e5;
+  --muted:    #5c7080;
+  --dim:      #3d4f5e;
+  --accent:   #4fc3f7;
+  --green:    #26a65b;
+  --green-l:  #2ecc71;
+  --amber:    #d4a017;
+  --red:      #c0392b;
+  --red-l:    #e74c3c;
+  --mono:     'JetBrains Mono', monospace;
+  --display:  'Rajdhani', sans-serif;
+  --body:     'Outfit', sans-serif;
+  --r:        10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--body);
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+/* Scanline overlay */
+body::after{
+  content:'';
+  position:fixed;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.03) 2px,rgba(0,0,0,.03) 4px);
+  pointer-events:none;z-index:9999;
+}
+
+/* ─── Header ──────────────────────────────────────────── */
+header{
+  background:linear-gradient(135deg,#0a1628 0%,#0d1f35 100%);
+  border-bottom:1px solid var(--border);
+  padding:0 28px;
+  height:64px;
+  display:flex;align-items:center;gap:16px;
+  position:sticky;top:0;z-index:100;
+  box-shadow:0 2px 20px #00000080;
+}
+.logo{
+  font-family:var(--display);font-size:26px;font-weight:700;
+  letter-spacing:2px;color:#fff;
+  display:flex;align-items:center;gap:10px;
+}
+.logo-p{
+  width:38px;height:38px;border-radius:8px;
+  background:linear-gradient(135deg,var(--accent),#0288d1);
+  display:grid;place-items:center;
+  font-size:18px;font-weight:700;color:#fff;
+  box-shadow:0 0 16px #4fc3f740;
+}
+.logo span{color:var(--accent);}
+.header-tag{
+  background:#1a2f42;border:1px solid var(--border2);
+  border-radius:4px;padding:3px 10px;
+  font-family:var(--mono);font-size:11px;color:var(--muted);
+  letter-spacing:.05em;
+}
+.header-right{margin-left:auto;display:flex;align-items:center;gap:14px;}
+
+/* Serial status pill */
+.serial-pill{
+  display:flex;align-items:center;gap:7px;
+  background:var(--s2);border:1px solid var(--border);
+  border-radius:999px;padding:6px 14px;
+  font-family:var(--mono);font-size:11px;
+  transition:all .3s;
+}
+.serial-pill.connected{border-color:#26a65b60;background:#0d2a1a;}
+.serial-pill.connected .sdot{background:var(--green-l);box-shadow:0 0 8px var(--green-l);}
+.serial-pill.error{border-color:#c0392b60;background:#2a0d0d;}
+.serial-pill.error .sdot{background:var(--red-l);box-shadow:0 0 8px var(--red-l);}
+.sdot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--muted);
+  transition:all .3s;
+}
+#serial-label{color:var(--text);font-size:11px;}
+
+/* Connect btn */
+.btn-connect{
+  background:linear-gradient(135deg,#1565c0,var(--accent));
+  border:none;border-radius:7px;padding:8px 18px;
+  font-family:var(--display);font-size:14px;font-weight:600;
+  color:#fff;cursor:pointer;
+  box-shadow:0 0 16px #4fc3f730;
+  transition:all .2s;letter-spacing:.5px;
+}
+.btn-connect:hover{opacity:.85;transform:translateY(-1px);}
+.btn-connect:active{transform:scale(.97);}
+.btn-connect:disabled{opacity:.4;cursor:default;transform:none;}
+
+
+
+/* ─── Main layout ─────────────────────────────────────── */
+.main-wrap{
+  flex:1;display:flex;flex-direction:column;
+  padding:24px 28px;gap:24px;
+  max-width:1400px;width:100%;margin:0 auto;
+}
+
+/* ─── Section heading ─────────────────────────────────── */
+.sec-head{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:14px;
+}
+.sec-head h2{
+  font-family:var(--display);font-size:16px;font-weight:600;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--muted);
+}
+.sec-head::after{
+  content:'';flex:1;height:1px;background:var(--border);
+}
+.sec-badge{
+  background:var(--s2);border:1px solid var(--border);
+  border-radius:4px;padding:2px 8px;
+  font-family:var(--mono);font-size:10px;color:var(--dim);
+}
+
+/* ─── Dashboard cards ─────────────────────────────────── */
+#dashboard{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:14px;
+}
+
+.park-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--r);
+  overflow:hidden;
+  position:relative;
+  transition:transform .2s,box-shadow .2s,border-color .3s;
+  animation:cardIn .4s cubic-bezier(.16,1,.3,1) both;
+}
+@keyframes cardIn{
+  from{opacity:0;transform:translateY(14px) scale(.97);}
+  to  {opacity:1;transform:translateY(0)    scale(1);}
+}
+.park-card:hover{transform:translateY(-3px);box-shadow:0 10px 40px #00000070;}
+.park-card.flash{animation:flash .5s ease both;}
+@keyframes flash{
+  0%{border-color:var(--accent);box-shadow:0 0 20px #4fc3f730;}
+  100%{border-color:var(--border);box-shadow:none;}
+}
+
+/* Left stripe */
+.card-stripe{width:4px;position:absolute;left:0;top:0;bottom:0;transition:background .4s;}
+
+.card-inner{padding:16px 16px 14px 20px;}
+
+.card-row1{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;}
+.area-name{font-family:var(--display);font-size:21px;font-weight:700;letter-spacing:.5px;color:#e8edf2;}
+.status-chip{
+  font-family:var(--mono);font-size:10px;font-weight:600;
+  padding:3px 9px;border-radius:4px;
+  border:1px solid transparent;
+  transition:all .3s;letter-spacing:.05em;
+}
+.chip-green{color:var(--green-l);background:#0d2a1a;border-color:#26a65b50;}
+.chip-amber{color:#f1c40f;background:#2a220d;border-color:#d4a01750;}
+.chip-red  {color:var(--red-l); background:#2a0d0d;border-color:#c0392b50;}
+
+.slots-big{
+  font-family:var(--mono);font-size:30px;font-weight:600;
+  color:#e8edf2;margin-bottom:2px;
+  transition:color .3s;
+}
+.slots-sub{font-family:var(--mono);font-size:11px;color:var(--muted);margin-bottom:12px;}
+
+/* Gauge bar */
+.gauge{height:6px;background:var(--s3);border-radius:999px;overflow:hidden;margin-bottom:12px;}
+.gauge-fill{height:100%;border-radius:999px;transition:width .6s cubic-bezier(.16,1,.3,1),background .4s;}
+
+.card-foot{display:flex;justify-content:space-between;align-items:center;}
+.upd-time{font-family:var(--mono);font-size:10px;color:var(--dim);}
+
+/* Summary bar */
+#summary-bar{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:12px;
+}
+.sum-box{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r);padding:14px 18px;
+  display:flex;flex-direction:column;gap:4px;
+}
+.sum-label{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;}
+.sum-val{font-family:var(--display);font-size:28px;font-weight:700;color:#e8edf2;line-height:1;}
+.sum-sub{font-family:var(--mono);font-size:10px;color:var(--dim);}
+
+/* ─── Log table ───────────────────────────────────────── */
+.log-controls{
+  display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;
+}
+.search-box{
+  background:var(--s2);border:1px solid var(--border);
+  border-radius:6px;padding:7px 12px;
+  color:var(--text);font-family:var(--mono);font-size:12px;
+  outline:none;transition:border-color .2s;width:220px;
+}
+.search-box:focus{border-color:var(--accent);}
+.filter-btn{
+  background:var(--s2);border:1px solid var(--border);
+  border-radius:6px;padding:7px 12px;
+  color:var(--muted);font-family:var(--mono);font-size:11px;
+  cursor:pointer;transition:all .2s;
+}
+.filter-btn.active,.filter-btn:hover{border-color:var(--accent);color:var(--accent);background:#4fc3f710;}
+.ml-auto{margin-left:auto;}
+.btn-refresh{
+  background:var(--s2);border:1px solid var(--border2);
+  border-radius:6px;padding:7px 14px;
+  font-family:var(--mono);font-size:11px;color:var(--accent);
+  cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px;
+}
+.btn-refresh:hover{background:#4fc3f710;}
+.btn-refresh.spinning .ref-icon{animation:spin .6s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.ref-icon{display:inline-block;transition:transform .2s;}
+
+.table-wrap{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--r);
+  overflow:hidden;
+  max-height:420px;
+  overflow-y:auto;
+}
+.table-wrap::-webkit-scrollbar{width:5px;}
+.table-wrap::-webkit-scrollbar-track{background:var(--s2);}
+.table-wrap::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
+
+table{width:100%;border-collapse:collapse;}
+thead{position:sticky;top:0;z-index:10;}
+th{
+  background:var(--s3);
+  font-family:var(--mono);font-size:10px;font-weight:600;
+  color:var(--muted);letter-spacing:.1em;text-transform:uppercase;
+  padding:10px 14px;text-align:left;
+  border-bottom:1px solid var(--border);
+  white-space:nowrap;
+}
+td{
+  padding:9px 14px;
+  font-family:var(--mono);font-size:12px;color:var(--text);
+  border-bottom:1px solid var(--border);
+  vertical-align:middle;
+}
+tr:last-child td{border-bottom:none;}
+tbody tr:hover{background:var(--s2);}
+tbody tr.new-row{animation:rowIn .4s ease both;}
+@keyframes rowIn{from{background:#4fc3f715;}to{background:transparent;}}
+
+.msg-cell{color:var(--dim);max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.area-cell{color:var(--accent);font-weight:600;}
+.occ-cell{font-weight:500;}
+.status-td{
+  font-size:10px;font-weight:600;
+  padding:3px 8px;border-radius:4px;
+  border:1px solid transparent;letter-spacing:.05em;
+  white-space:nowrap;
+}
+
+.empty-row td{text-align:center;color:var(--muted);padding:40px;font-size:13px;}
+
+/* ─── Serial monitor (collapsible) ───────────────────── */
+.serial-monitor{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r);overflow:hidden;
+}
+.mon-header{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 16px;background:var(--s2);
+  border-bottom:1px solid var(--border);
+  cursor:pointer;user-select:none;
+}
+.mon-title{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;}
+.mon-toggle{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--dim);}
+.mon-body{
+  padding:10px;background:#050810;
+  height:140px;overflow-y:auto;
+  font-family:var(--mono);font-size:11px;
+  color:#4ade80;line-height:1.7;
+}
+.mon-body::-webkit-scrollbar{width:4px;}
+.mon-body::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+.mon-line.err{color:var(--red-l);}
+.mon-line.warn{color:var(--amber);}
+.mon-line.info{color:var(--accent);}
+.mon-line.muted{color:var(--muted);}
+
+/* ─── Toast ───────────────────────────────────────────── */
+#toast{
+  position:fixed;bottom:20px;right:20px;z-index:9998;
+  background:var(--s3);border:1px solid var(--border2);
+  border-radius:8px;padding:11px 16px;
+  font-family:var(--mono);font-size:12px;color:var(--text);
+  transform:translateY(60px);opacity:0;
+  transition:all .3s cubic-bezier(.16,1,.3,1);
+  pointer-events:none;max-width:340px;
+}
+#toast.show{transform:translateY(0);opacity:1;}
+
+/* ─── Responsive ──────────────────────────────────────── */
+@media(max-width:640px){
+  header,.main-wrap{padding-left:14px;padding-right:14px;}
+  .logo-name{display:none;}
+}
+
+/* ─── Arduino Simulator Panel ─────────────────────────── */
+.sim-panel{
+  background:var(--surface);
+  border:1px solid var(--border2);
+  border-radius:var(--r);
+  overflow:hidden;
+  box-shadow:0 0 24px #4fc3f710;
+}
+.sim-header{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 16px;
+  background:linear-gradient(90deg,#0a1f35,var(--s2));
+  border-bottom:1px solid var(--border);
+}
+.sim-title{
+  font-family:var(--mono);font-size:12px;font-weight:600;
+  color:var(--accent);letter-spacing:.08em;text-transform:uppercase;
+}
+.sim-status-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--muted);margin-left:auto;
+  transition:all .3s;flex-shrink:0;
+}
+.sim-status-dot.running{
+  background:#4ade80;
+  box-shadow:0 0 8px #4ade80;
+  animation:pulse 1.5s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+.sim-status-lbl{
+  font-family:var(--mono);font-size:10px;color:var(--muted);
+  transition:color .3s;
+}
+.sim-status-lbl.running{color:#4ade80;}
+
+.sim-body{padding:14px 16px;display:flex;flex-direction:column;gap:12px;}
+
+/* Controls row */
+.sim-controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+
+.btn-sim{
+  border:none;border-radius:7px;padding:9px 20px;
+  font-family:var(--display);font-size:14px;font-weight:600;
+  cursor:pointer;transition:all .2s;letter-spacing:.5px;
+  display:flex;align-items:center;gap:7px;white-space:nowrap;
+}
+.btn-sim-start{
+  background:linear-gradient(135deg,#166534,var(--green-l));
+  color:#fff;box-shadow:0 0 16px #2ecc7130;
+}
+.btn-sim-start:hover{opacity:.85;transform:translateY(-1px);}
+.btn-sim-stop{
+  background:linear-gradient(135deg,#7f1d1d,var(--red-l));
+  color:#fff;box-shadow:0 0 16px #e74c3c30;
+}
+.btn-sim-stop:hover{opacity:.85;transform:translateY(-1px);}
+.btn-sim-once{
+  background:var(--s2);border:1px solid var(--border2);
+  color:var(--accent);font-size:13px;
+}
+.btn-sim-once:hover{background:#4fc3f710;border-color:var(--accent);}
+.btn-sim:active{transform:scale(.97);}
+.btn-sim:disabled{opacity:.35;cursor:default;transform:none;}
+
+/* Interval slider */
+.sim-slider-row{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+}
+.sim-slider-row label{
+  font-family:var(--mono);font-size:11px;color:var(--muted);white-space:nowrap;
+}
+input[type=range].sim-slider{
+  -webkit-appearance:none;appearance:none;
+  width:160px;height:4px;
+  background:var(--border2);border-radius:2px;outline:none;cursor:pointer;
+}
+input[type=range].sim-slider::-webkit-slider-thumb{
+  -webkit-appearance:none;width:14px;height:14px;border-radius:50%;
+  background:var(--accent);cursor:pointer;
+  box-shadow:0 0 6px #4fc3f750;
+}
+#sim-interval-lbl{
+  font-family:var(--mono);font-size:11px;color:var(--accent);
+  min-width:60px;
+}
+
+/* Manual area buttons */
+.sim-manual-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.sim-manual-row span{
+  font-family:var(--mono);font-size:10px;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;
+}
+.btn-area{
+  background:var(--s2);border:1px solid var(--border);
+  border-radius:5px;padding:5px 12px;
+  font-family:var(--mono);font-size:11px;color:var(--text);
+  cursor:pointer;transition:all .15s;
+}
+.btn-area:hover{border-color:var(--accent);color:var(--accent);background:#4fc3f710;}
+
+/* Next-fire countdown bar */
+.sim-countdown{
+  display:flex;align-items:center;gap:10px;
+}
+.countdown-track{
+  flex:1;height:3px;background:var(--s3);border-radius:999px;overflow:hidden;
+}
+.countdown-fill{
+  height:100%;background:var(--accent);border-radius:999px;
+  transition:width .25s linear;
+}
+#countdown-lbl{
+  font-family:var(--mono);font-size:10px;color:var(--dim);
+  white-space:nowrap;min-width:56px;text-align:right;
+}
+</style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<header>
+  <div class="logo">
+    <div class="logo-p">P</div>
+    <span class="logo-name">Park<span>Nav</span></span>
+    <div class="header-tag">MAIN CONTROL</div>
+  </div>
+  <div class="header-right">
+    <div class="serial-pill" id="serial-pill">
+      <div class="sdot" id="sdot"></div>
+      <span id="serial-label">Not Connected</span>
+    </div>
+    <button class="btn-connect" id="btn-connect" onclick="toggleSerial()">Connect Arduino</button>
+  </div>
+</header>
+
+<div class="main-wrap">
+
+  <!-- ── Summary bar ── -->
+  <div>
+    <div class="sec-head"><h2>Overview</h2><div class="sec-badge" id="last-update-badge">—</div></div>
+    <div id="summary-bar">
+      <div class="sum-box">
+        <div class="sum-label">Total Capacity</div>
+        <div class="sum-val" id="s-total-cap">—</div>
+        <div class="sum-sub">Campus Parking total</div>
+      </div>
+      <div class="sum-box">
+        <div class="sum-label">Total Occupied</div>
+        <div class="sum-val" id="s-total-occ">—</div>
+        <div class="sum-sub">Campus Parking total</div>
+      </div>
+      <div class="sum-box">
+        <div class="sum-label">Total Available</div>
+        <div class="sum-val" id="s-total-avail" style="color:var(--green-l)">—</div>
+        <div class="sum-sub">Campus Parking total</div>
+      </div>
+      <div class="sum-box">
+        <div class="sum-label">Areas Full</div>
+        <div class="sum-val" id="s-full" style="color:var(--red-l)">—</div>
+        <div class="sum-sub">of <span id="s-total-areas">—</span> specific areas</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Parking Dashboard ── -->
+  <div>
+    <div class="sec-head"><h2>Parking Areas</h2><div class="sec-badge" id="area-count-badge">0 AREAS</div></div>
+    <div id="dashboard">
+      <div style="grid-column:1/-1;text-align:center;padding:50px 20px;color:var(--muted);font-family:var(--mono);font-size:13px;">
+        📡 Connect Arduino or wait for data from Google Sheet…
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Arduino Simulator ── -->
+  <div>
+    <div class="sec-head">
+      <h2>Arduino Simulator</h2>
+      <div class="sec-badge">NO HARDWARE NEEDED</div>
+    </div>
+    <div class="sim-panel">
+      <div class="sim-header">
+        <div class="sim-title">🔌 Virtual Arduino — Serial Output Simulator</div>
+        <div class="sim-status-lbl" id="sim-status-lbl">Idle</div>
+        <div class="sim-status-dot" id="sim-status-dot"></div>
+      </div>
+      <div class="sim-body">
+
+        <!-- Start / Stop / Fire Once -->
+        <div class="sim-controls">
+          <button class="btn-sim btn-sim-start" id="btn-sim-start" onclick="simStart()">
+            ▶ Start Auto
+          </button>
+          <button class="btn-sim btn-sim-stop" id="btn-sim-stop" onclick="simStop()" disabled>
+            ■ Stop
+          </button>
+          <button class="btn-sim btn-sim-once" onclick="simFireOnce()">
+            ↯ Fire Once
+          </button>
+        </div>
+
+        <!-- Interval slider -->
+        <div class="sim-slider-row">
+          <label>Interval:</label>
+          <input type="range" class="sim-slider" id="sim-slider"
+            min="3" max="10" value="5" step="1"
+            oninput="simUpdateInterval(this.value)"/>
+          <span id="sim-interval-lbl">3 – 10 s (random)</span>
+        </div>
+
+        <!-- Countdown bar -->
+        <div class="sim-countdown">
+          <div class="countdown-track">
+            <div class="countdown-fill" id="countdown-fill" style="width:0%"></div>
+          </div>
+          <span id="countdown-lbl">—</span>
+        </div>
+
+        <!-- Manual fire per area -->
+        <div class="sim-manual-row">
+          <span>Manual fire:</span>
+          <button class="btn-area" onclick="simFireArea(0)">Museum</button>
+          <button class="btn-area" onclick="simFireArea(1)">CH</button>
+          <button class="btn-area" onclick="simFireArea(2)">Loyola</button>
+          <button class="btn-area" onclick="simFireCampusTotal()" style="color:var(--accent);border-color:var(--border2)">Campus Total</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Serial Monitor ── -->
+  <div>
+    <div class="serial-monitor">
+      <div class="mon-header" onclick="toggleMonitor()">
+        <div class="mon-title">⚡ Serial Monitor</div>
+        <div class="mon-toggle" id="mon-toggle-lbl">▼ collapse</div>
+      </div>
+      <div class="mon-body" id="mon-body">
+        <div class="mon-line muted">[system] Serial monitor ready. Connect Arduino to begin receiving data.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Log from Google Sheet ── -->
+  <div>
+    <div class="sec-head"><h2>Message Log</h2><div class="sec-badge" id="log-count-badge">0 ENTRIES</div></div>
+    <div class="log-controls">
+      <input class="search-box" id="search-input" placeholder="Search messages…" oninput="filterTable()"/>
+      <button class="filter-btn active" data-filter="all"    onclick="setFilter(this,'all')">All</button>
+      <button class="filter-btn"        data-filter="museum" onclick="setFilter(this,'museum')">Museum</button>
+      <button class="filter-btn"        data-filter="ch"     onclick="setFilter(this,'ch')">CH</button>
+      <button class="filter-btn"        data-filter="loyola" onclick="setFilter(this,'loyola')">Loyola</button>
+      <button class="filter-btn"        data-filter="campus" onclick="setFilter(this,'campus')">Campus Total</button>
+      <button class="btn-refresh ml-auto" id="btn-refresh" onclick="fetchLog()">
+        <span class="ref-icon" id="ref-icon">↻</span> Refresh Log
+      </button>
+    </div>
+    <div class="table-wrap">
+      <table id="log-table">
+        <thead>
+          <tr>
+            <th>Message</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Area</th>
+            <th>Occ.</th>
+            <th>Cap.</th>
+            <th>Free</th>
+            <th>Status</th>
+            <th>Fill %</th>
+          </tr>
+        </thead>
+        <tbody id="log-body">
+          <tr class="empty-row"><td colspan="9">No data yet. Connect to Google Sheet to load log.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /main-wrap -->
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<script>
+// ════════════════════════════════════════════════════════
+//  CONFIG & STATE
+// ════════════════════════════════════════════════════════
+
+// ▼▼▼ PASTE YOUR APPS SCRIPT URL HERE ▼▼▼
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbztQwSchnUkabk56N4u_unf-EyrzS2AjwgNNolohoUJYknKCvkUsxuMEbkI1tvnR8G9/exec';
+// ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+
+let serialPort   = null;
+let serialReader = null;
+let serialBuffer = '';
+let parkingState = {};   // { Museum/CH/Loyola: { occupied, capacity, ... } } — 3 specific areas
+let campusTotal  = null; // { occupied, capacity, available, fillPct } — campus-wide total from Campus message
+let allLogRows   = [];
+let activeFilter = 'all';
+let monitorOpen  = true;
+let totalMessages = 0;
+
+// Auto-fetch log on load
+if (SCRIPT_URL && SCRIPT_URL !== 'YOUR_APPS_SCRIPT_URL_HERE') setTimeout(fetchLog, 800);
+
+// ════════════════════════════════════════════════════════
+//  SERIAL (Web Serial API)
+// ════════════════════════════════════════════════════════
+
+async function toggleSerial() {
+  if (serialPort) { await disconnectSerial(); return; }
+  await connectSerial();
+}
+
+async function connectSerial() {
+  if (!navigator.serial) {
+    toast('⚠ Web Serial not supported. Use Chrome/Edge.');
+    monLog('Web Serial API not supported in this browser. Use Chrome or Edge.', 'err');
+    return;
+  }
+  try {
+    serialPort = await navigator.serial.requestPort();
+    await serialPort.open({ baudRate: 9600 });
+    setSerialUI(true);
+    monLog('Serial port opened at 9600 baud', 'info');
+    readSerial();
+  } catch(e) {
+    serialPort = null;
+    setSerialUI(false);
+    monLog('Failed to open serial port: ' + e.message, 'err');
+    toast('⚠ Could not connect: ' + e.message);
+  }
+}
+
+async function disconnectSerial() {
+  try {
+    if (serialReader) { await serialReader.cancel(); serialReader = null; }
+    if (serialPort)   { await serialPort.close();    serialPort = null; }
+  } catch(e) {}
+  setSerialUI(false);
+  monLog('Serial port disconnected.', 'warn');
+  toast('Serial disconnected');
+}
+
+async function readSerial() {
+  const decoder = new TextDecoderStream();
+  serialPort.readable.pipeTo(decoder.writable);
+  const reader = decoder.readable.getReader();
+  serialReader = reader;
+
+  try {
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      serialBuffer += value;
+      // Process complete lines
+      const lines = serialBuffer.split('\n');
+      serialBuffer = lines.pop(); // keep incomplete last line
+      lines.forEach(line => {
+        const trimmed = line.trim();
+        if (trimmed) processLine(trimmed);
+      });
+    }
+  } catch(e) {
+    if (serialPort) monLog('Read error: ' + e.message, 'err');
+  }
+}
+
+function setSerialUI(connected) {
+  const pill  = document.getElementById('serial-pill');
+  const label = document.getElementById('serial-label');
+  const btn   = document.getElementById('btn-connect');
+  pill.className  = 'serial-pill ' + (connected ? 'connected' : '');
+  label.textContent = connected ? 'Arduino Connected' : 'Not Connected';
+  btn.textContent   = connected ? 'Disconnect' : 'Connect Arduino';
+}
+
+// ════════════════════════════════════════════════════════
+//  MESSAGE PARSING
+// ════════════════════════════════════════════════════════
+
+// Matches all ParkNav messages:
+//   "AreaParkNav Alert: Campus Parking (10/16)"  ← campus-wide TOTAL (not a card)
+//   "ParkNav Alert: Museum Parking (3/6)"        ← specific area card
+//   "ParkNav Alert: CH Parking (2/4)"            ← specific area card
+//   "ParkNav Alert: Loyola Parking (5/6)"        ← specific area card
+const PATTERN = /(?:Area)?ParkNav Alert:\s*(.+?)\s*Parking\s*\((\d+)\/(\d+)\)/i;
+
+function processLine(raw) {
+  monLog(raw);
+  const m = raw.match(PATTERN);
+  if (!m) {
+    if (raw.toLowerCase().includes('parknav')) monLog('⚠ Unrecognised ParkNav format', 'warn');
+    return;
+  }
+  const area     = normArea(m[1].trim());
+  const occupied = parseInt(m[2], 10);
+  const capacity = parseInt(m[3], 10);
+  const available = Math.max(0, capacity - occupied);
+  const status   = getStatus(occupied, capacity);
+  const fillPct  = capacity ? Math.round((occupied/capacity)*100) : 100;
+
+  totalMessages++;
+
+  if (area === 'Campus') {
+    // Campus = campus-wide total — store separately, update summary only, NO dashboard card
+    campusTotal = { occupied, capacity, available, fillPct, updatedAt: Date.now() };
+    monLog(`✓ Campus Total → ${occupied}/${capacity} total slots [campus-wide]`, 'info');
+  } else {
+    // CH, Museum, Loyola — specific area cards
+    parkingState[area] = { occupied, capacity, available, status, fillPct, updatedAt: Date.now() };
+    monLog(`✓ Parsed → ${area} ${occupied}/${capacity} [${status.toUpperCase()}]`, 'info');
+    updateDashboard();
+  }
+
+  updateSummary();
+
+  // Save to Google Sheet
+  if (SCRIPT_URL && SCRIPT_URL !== 'YOUR_APPS_SCRIPT_URL_HERE') saveToSheet({ message: raw, area, occupied, capacity, available, status, fillPct });
+  else toast('⚠ Apps Script URL not set in the HTML file');
+}
+
+function normArea(raw) {
+  const l = raw.toLowerCase();
+  if (l.includes('campus')) return 'Campus';  // campus-wide total
+  if (l.includes('museum')) return 'Museum';  // specific area
+  if (l.includes('ch'))     return 'CH';      // specific area
+  if (l.includes('loyola')) return 'Loyola';  // specific area
+  return raw;
+}
+
+function getStatus(occ, cap) {
+  if (cap === 0 || occ >= cap) return 'full';
+  if (occ/cap >= 0.75)         return 'warning';
+  return 'available';
+}
+
+// ════════════════════════════════════════════════════════
+//  GOOGLE SHEET — SAVE (POST)
+// ════════════════════════════════════════════════════════
+
+async function saveToSheet(data) {
+  try {
+    // Use no-cors because Apps Script redirect doesn't support CORS perfectly
+    // We send then rely on fetch log to confirm.
+    const res = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' }, // text/plain avoids CORS preflight
+      body: JSON.stringify(data)
+    });
+    const json = await res.json();
+    if (json.ok) {
+      monLog(`☁ Saved to Sheet: ${data.area}`, 'info');
+      // Refresh log after short delay
+      setTimeout(fetchLog, 1200);
+    } else {
+      monLog('Sheet save error: ' + json.error, 'err');
+    }
+  } catch(e) {
+    monLog('Sheet POST failed: ' + e.message, 'err');
+    toast('⚠ Could not save to Sheet: ' + e.message);
+  }
+}
+
+// ════════════════════════════════════════════════════════
+//  GOOGLE SHEET — FETCH LOG (GET)
+// ════════════════════════════════════════════════════════
+
+async function fetchLog() {
+  if (!SCRIPT_URL || SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') { toast('⚠ Set your Apps Script URL inside the HTML file'); return; }
+  const btn = document.getElementById('btn-refresh');
+  btn.classList.add('spinning');
+
+  try {
+    const res  = await fetch(SCRIPT_URL + '?action=all', { cache: 'no-store' });
+    const json = await res.json();
+    if (!json.ok) throw new Error(json.error);
+
+    allLogRows = json.data || [];
+    renderTable(allLogRows);
+
+    // Also sync dashboard from sheet if no Arduino connected
+    if (!serialPort && allLogRows.length > 0) syncDashboardFromSheet(allLogRows);
+
+    document.getElementById('log-count-badge').textContent = allLogRows.length + ' ENTRIES';
+    document.getElementById('last-update-badge').textContent = 'Updated ' + fmtTime(Date.now());
+    monLog(`☁ Log refreshed: ${allLogRows.length} entries`, 'info');
+    toast(`✓ Loaded ${allLogRows.length} log entries`);
+
+  } catch(e) {
+    monLog('Sheet GET failed: ' + e.message, 'err');
+    toast('⚠ Could not load log: ' + e.message);
+  } finally {
+    btn.classList.remove('spinning');
+  }
+}
+
+function syncDashboardFromSheet(rows) {
+  // Rows are newest-first; first occurrence per area = latest
+  const seen = {};
+  rows.forEach(r => {
+    if (r.area && !seen[r.area]) {
+      seen[r.area] = true;
+      if (r.area === 'Campus') {
+        // Campus = campus-wide total — update summary only
+        campusTotal = {
+          occupied:  r.occupied,
+          capacity:  r.capacity,
+          available: r.available,
+          fillPct:   r.fillPct,
+          updatedAt: Date.now()
+        };
+      } else {
+        // Museum, CH, Loyola — specific area cards
+        parkingState[r.area] = {
+          occupied:  r.occupied,
+          capacity:  r.capacity,
+          available: r.available,
+          status:    r.status,
+          fillPct:   r.fillPct,
+          updatedAt: Date.now()
+        };
+      }
+    }
+  });
+  updateDashboard();
+  updateSummary();
+}
+
+// ════════════════════════════════════════════════════════
+//  DASHBOARD RENDER
+// ════════════════════════════════════════════════════════
+
+const STATUS_META = {
+  available: { color:'var(--green-l)', chipCls:'chip-green', label:'AVAILABLE' },
+  warning:   { color:'var(--amber)',   chipCls:'chip-amber', label:'FILLING UP' },
+  full:      { color:'var(--red-l)',   chipCls:'chip-red',   label:'FULL' },
+};
+
+function updateDashboard() {
+  const container = document.getElementById('dashboard');
+  const areas     = Object.keys(parkingState);
+
+  if (areas.length === 0) return;
+
+  document.getElementById('area-count-badge').textContent = areas.length + ' AREAS (CH / Museum / Loyola)';
+
+  areas.forEach((area, i) => {
+    const id  = 'card-' + area.replace(/[^a-z0-9]/gi,'_');
+    const existing = document.getElementById(id);
+    if (existing) {
+      refreshCard(id, area);
+    } else {
+      const card = buildCard(area, id);
+      card.style.animationDelay = i * .08 + 's';
+      // Remove placeholder if present
+      const ph = container.querySelector('[data-placeholder]');
+      if (ph) ph.remove();
+      container.appendChild(card);
+    }
+  });
+}
+
+function buildCard(area, id) {
+  const d    = parkingState[area];
+  const meta = STATUS_META[d.status] || STATUS_META.available;
+  const pct  = d.fillPct || 0;
+
+  const card = document.createElement('div');
+  card.className = 'park-card';
+  card.id = id;
+  card.innerHTML = `
+    <div class="card-stripe" style="background:${meta.color}"></div>
+    <div class="card-inner">
+      <div class="card-row1">
+        <div class="area-name">${area}</div>
+        <div class="status-chip ${meta.chipCls}">● ${meta.label}</div>
+      </div>
+      <div class="slots-big" style="color:${meta.color}">${d.occupied}<span style="color:var(--muted);font-size:18px"> / ${d.capacity}</span></div>
+      <div class="slots-sub">${d.available} slot${d.available!==1?'s':''} available</div>
+      <div class="gauge"><div class="gauge-fill" style="width:${pct}%;background:${meta.color}"></div></div>
+      <div class="card-foot">
+        <div class="upd-time">↻ ${fmtTime(d.updatedAt)}</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--dim)">${pct}% full</div>
+      </div>
+    </div>`;
+  return card;
+}
+
+function refreshCard(id, area) {
+  const d    = parkingState[area];
+  const meta = STATUS_META[d.status] || STATUS_META.available;
+  const pct  = d.fillPct || 0;
+  const card = document.getElementById(id);
+  if (!card) return;
+
+  card.querySelector('.card-stripe').style.background         = meta.color;
+  card.querySelector('.status-chip').className                = `status-chip ${meta.chipCls}`;
+  card.querySelector('.status-chip').textContent              = `● ${meta.label}`;
+  card.querySelector('.slots-big').innerHTML                  = `${d.occupied}<span style="color:var(--muted);font-size:18px"> / ${d.capacity}</span>`;
+  card.querySelector('.slots-big').style.color                = meta.color;
+  card.querySelector('.slots-sub').textContent                = `${d.available} slot${d.available!==1?'s':''} available`;
+  card.querySelector('.gauge-fill').style.width               = pct + '%';
+  card.querySelector('.gauge-fill').style.background          = meta.color;
+  card.querySelector('.upd-time').textContent                 = `↻ ${fmtTime(d.updatedAt)}`;
+  card.querySelector('.card-foot div:last-child').textContent = pct + '% full';
+
+  card.classList.remove('flash');
+  void card.offsetWidth;
+  card.classList.add('flash');
+  setTimeout(()=>card.classList.remove('flash'), 600);
+}
+
+function updateSummary() {
+  // Summary totals: prefer the Campus-wide message if received,
+  // otherwise sum the 3 specific areas (Museum + CH + Loyola).
+  let totCap, totOcc, totAvl;
+  if (campusTotal) {
+    totCap = campusTotal.capacity;
+    totOcc = campusTotal.occupied;
+    totAvl = campusTotal.available;
+  } else {
+    const areas = Object.values(parkingState);
+    totCap = areas.reduce((s,a)=>s+a.capacity,  0);
+    totOcc = areas.reduce((s,a)=>s+a.occupied,  0);
+    totAvl = areas.reduce((s,a)=>s+a.available, 0);
+  }
+  const full = Object.values(parkingState).filter(a=>a.status==='full').length;
+
+  document.getElementById('s-total-cap').textContent   = totCap  || '—';
+  document.getElementById('s-total-occ').textContent   = totOcc  !== undefined ? totOcc : '—';
+  document.getElementById('s-total-avail').textContent = totAvl  !== undefined ? totAvl : '—';
+  document.getElementById('s-full').textContent        = full;
+  document.getElementById('s-total-areas').textContent = Object.keys(parkingState).length;
+}
+
+// ════════════════════════════════════════════════════════
+//  LOG TABLE
+// ════════════════════════════════════════════════════════
+
+function renderTable(rows) {
+  const tbody  = document.getElementById('log-body');
+  const search = document.getElementById('search-input').value.toLowerCase();
+
+  const filtered = rows.filter(r => {
+    const areaMatch = activeFilter === 'all' || (r.area||'').toLowerCase().includes(activeFilter);
+    const searchMatch = !search || (r.message||'').toLowerCase().includes(search) || (r.area||'').toLowerCase().includes(search);
+    return areaMatch && searchMatch;
+  });
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = `<tr class="empty-row"><td colspan="9">No matching entries.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = filtered.map((r,i) => `
+    <tr class="${i===0?'new-row':''}">
+      <td class="msg-cell" title="${esc(r.message)}">${esc(r.message)}</td>
+      <td style="color:var(--muted);white-space:nowrap">${esc(r.date)}</td>
+      <td style="color:var(--dim);white-space:nowrap">${esc(r.time)}</td>
+      <td class="area-cell">${esc(r.area)}</td>
+      <td class="occ-cell">${r.occupied}</td>
+      <td style="color:var(--muted)">${r.capacity}</td>
+      <td style="color:${r.available>0?'var(--green-l)':'var(--red-l)'}">${r.available}</td>
+      <td><span class="status-td ${statusTdClass(r.status)}">${(r.status||'').toUpperCase()}</span></td>
+      <td style="color:var(--muted)">${r.fillPct}%</td>
+    </tr>`).join('');
+}
+
+function statusTdClass(s) {
+  if ((s||'') === 'full')    return 'chip-red';
+  if ((s||'') === 'warning') return 'chip-amber';
+  return 'chip-green';
+}
+
+function filterTable() { renderTable(allLogRows); }
+function setFilter(btn, f) {
+  activeFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  filterTable();
+}
+
+// ════════════════════════════════════════════════════════
+//  SERIAL MONITOR
+// ════════════════════════════════════════════════════════
+
+function monLog(msg, type='') {
+  const body = document.getElementById('mon-body');
+  const ts   = new Date().toLocaleTimeString('en-US',{hour12:false});
+  const line = document.createElement('div');
+  line.className = 'mon-line ' + type;
+  line.textContent = `[${ts}] ${msg}`;
+  body.appendChild(line);
+  body.scrollTop = body.scrollHeight;
+  // Keep max 200 lines
+  while (body.children.length > 200) body.removeChild(body.firstChild);
+}
+
+function toggleMonitor() {
+  const body = document.getElementById('mon-body');
+  const lbl  = document.getElementById('mon-toggle-lbl');
+  monitorOpen = !monitorOpen;
+  body.style.display  = monitorOpen ? '' : 'none';
+  lbl.textContent     = monitorOpen ? '▼ collapse' : '▶ expand';
+}
+
+// ════════════════════════════════════════════════════════
+//  UTILS
+// ════════════════════════════════════════════════════════
+
+function fmtTime(ts) {
+  return new Date(ts).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+}
+
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+let toastTimer;
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>el.classList.remove('show'), 3000);
+}
+
+// Auto-refresh log every 30s when URL is set
+setInterval(()=>{ if(SCRIPT_URL && SCRIPT_URL !== 'YOUR_APPS_SCRIPT_URL_HERE') fetchLog(); }, 30000);
+
+// ════════════════════════════════════════════════════════
+//  ARDUINO SIMULATOR
+//  Calls processLine() directly — the exact same function
+//  that the real Web Serial path uses. Output is identical.
+// ════════════════════════════════════════════════════════
+
+// ── Parking area definitions ──────────────────────────
+// Only 3 specific areas produce dashboard cards:
+const SIM_AREAS = [
+  { name: 'Museum',  capacity: 6  },
+  { name: 'CH',      capacity: 4  },
+  { name: 'Loyola',  capacity: 6  },
+];
+
+// Live occupancy state for the 3 specific areas
+const simOccupied = [3, 2, 3];
+
+// Campus Parking = campus-wide total (sum of all 3 areas)
+// Sent separately as the overall total message
+const CAMPUS_CAPACITY = 16; // total slots across entire campus
+
+let simRunning      = false;
+let simTimer        = null;      // setTimeout handle
+let simCdTimer      = null;      // setInterval for countdown bar
+let simNextArea     = 0;         // round-robin pointer
+let simFireAt       = 0;         // epoch ms when next message fires
+let simTotalMs      = 0;         // total interval ms for this round
+
+// ── Start ──────────────────────────────────────────────
+function simStart() {
+  if (simRunning) return;
+  simRunning = true;
+  document.getElementById('btn-sim-start').disabled = true;
+  document.getElementById('btn-sim-stop').disabled  = false;
+  document.getElementById('sim-status-dot').classList.add('running');
+  document.getElementById('sim-status-lbl').classList.add('running');
+  document.getElementById('sim-status-lbl').textContent = 'Running';
+  monLog('[SIM] Arduino simulator started — sending every 3–10 s', 'info');
+  simScheduleNext();
+}
+
+// ── Stop ───────────────────────────────────────────────
+function simStop() {
+  if (!simRunning) return;
+  simRunning = false;
+  clearTimeout(simTimer);
+  clearInterval(simCdTimer);
+  document.getElementById('btn-sim-start').disabled = false;
+  document.getElementById('btn-sim-stop').disabled  = true;
+  document.getElementById('sim-status-dot').classList.remove('running');
+  document.getElementById('sim-status-lbl').classList.remove('running');
+  document.getElementById('sim-status-lbl').textContent = 'Stopped';
+  document.getElementById('countdown-fill').style.width = '0%';
+  document.getElementById('countdown-lbl').textContent  = '—';
+  monLog('[SIM] Simulator stopped.', 'warn');
+}
+
+// ── Fire once (random specific area) ──────────────────
+function simFireOnce() {
+  const idx = Math.floor(Math.random() * SIM_AREAS.length); // 0-2 only
+  simFireArea(idx);
+}
+
+// ── Fire a specific area immediately ──────────────────
+function simFireArea(idx) {
+  simUpdateOccupancy(idx);
+  const msg = simBuildMessage(idx);
+  monLog('[SIM] → ' + msg, 'info');
+  processLine(msg);   // ← feeds directly into the existing parse+save pipeline
+
+  // Also send the Campus total message (sum of all 3 specific areas)
+  simFireCampusTotal();
+}
+
+// ── Fire the Campus-wide total message ────────────────
+function simFireCampusTotal() {
+  const totalOcc = simOccupied.reduce((s, o) => s + o, 0);
+  const totalAvail = Math.max(0, CAMPUS_CAPACITY - totalOcc);
+  const campusMsg = `AreaParkNav Alert: Campus Parking (${totalOcc}/${CAMPUS_CAPACITY})`;
+  monLog('[SIM] → ' + campusMsg, 'info');
+  processLine(campusMsg);
+}
+
+// ── Schedule next automatic fire ──────────────────────
+function simScheduleNext() {
+  if (!simRunning) return;
+  // Random interval 3–10 seconds
+  const ms = Math.floor(Math.random() * (10000 - 3000 + 1)) + 3000;
+  simTotalMs = ms;
+  simFireAt  = Date.now() + ms;
+
+  simTimer = setTimeout(() => {
+    if (!simRunning) return;
+    simFireArea(simNextArea);
+    simNextArea = (simNextArea + 1) % SIM_AREAS.length;
+    simScheduleNext();
+  }, ms);
+
+  // Countdown bar update every 250 ms
+  clearInterval(simCdTimer);
+  simCdTimer = setInterval(() => {
+    if (!simRunning) { clearInterval(simCdTimer); return; }
+    const remaining = Math.max(0, simFireAt - Date.now());
+    const pct       = ((simTotalMs - remaining) / simTotalMs) * 100;
+    const secs      = (remaining / 1000).toFixed(1);
+    document.getElementById('countdown-fill').style.width = pct + '%';
+    document.getElementById('countdown-lbl').textContent  = secs + ' s';
+  }, 250);
+}
+
+// ── Occupancy simulation (same logic as the .ino file) ─
+function simUpdateOccupancy(idx) {
+  const cap  = SIM_AREAS[idx].capacity;
+  const roll = Math.floor(Math.random() * 10);
+  if      (roll < 3) simOccupied[idx] = Math.min(simOccupied[idx] + 1, cap);
+  else if (roll < 6) simOccupied[idx] = Math.max(simOccupied[idx] - 1, 0);
+  else if (roll === 6) simOccupied[idx] = Math.min(simOccupied[idx] + 2, cap);
+  else if (roll === 7) simOccupied[idx] = Math.max(simOccupied[idx] - 2, 0);
+  // roll 8–9 → no change
+}
+
+// ── Build message string matching the regex exactly ───
+// Regex in processLine(): /(?:Area)?ParkNav Alert:\s*(.+?)\s*Parking\s*\((\d+)\/(\d+)\)/i
+function simBuildMessage(idx) {
+  const area = SIM_AREAS[idx];
+  return `ParkNav Alert: ${area.name} Parking (${simOccupied[idx]}/${area.capacity})`;
+}
+
+// ── Interval label (slider is decorative — interval is always random 3-10s) ─
+function simUpdateInterval(val) {
+  document.getElementById('sim-interval-lbl').textContent = '3 – 10 s (random)';
+}
+
+// Auto-start simulator on page load so the dashboard is never empty
+window.addEventListener('load', () => {
+  setTimeout(simStart, 600);
+});
+</script>
+</body>
+</html>
