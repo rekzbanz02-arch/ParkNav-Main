@@ -7,33 +7,45 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-/* ─── Variables ─────────────────────────────────────── */
+/* ─── Variables — Xavier University · Ateneo de Cagayan ── */
 :root{
-  --bg:       #080c10;
-  --surface:  #0d1117;
-  --s2:       #131a22;
-  --s3:       #1a2332;
-  --border:   #21303f;
-  --border2:  #2d4156;
-  --text:     #cdd9e5;
-  --muted:    #5c7080;
-  --dim:      #3d4f5e;
-  --accent:   #4fc3f7;
-  --green:    #26a65b;
-  --green-l:  #2ecc71;
-  --amber:    #d4a017;
-  --red:      #c0392b;
-  --red-l:    #e74c3c;
+  /* XU Primary Navy Blue */
+  --bg:       #05091a;
+  --surface:  #090e2a;
+  --s2:       #0d1235;
+  --s3:       #111840;
+  --border:   #1c2a6b;
+  --border2:  #283d8f;
+  /* XU Text */
+  --text:     #e8ecf8;
+  --muted:    #6a7cb5;
+  --dim:      #3d4f8a;
+  /* XU Gold / Accent */
+  --accent:   #f0b429;
+  --accent-l: #ffd166;
+  --accent-d: #c8941a;
+  /* Status Colors */
+  --green:    #1a7a45;
+  --green-l:  #22c55e;
+  --amber:    #d97706;
+  --red:      #b91c1c;
+  --red-l:    #ef4444;
+  /* Fonts */
   --mono:     'JetBrains Mono', monospace;
   --display:  'Rajdhani', sans-serif;
   --body:     'Outfit', sans-serif;
   --r:        10px;
+  /* XU Brand Colors (reference) */
+  --xu-navy:  #0a0f2e;
+  --xu-blue:  #1a2575;
+  --xu-gold:  #f0b429;
+  --xu-white: #f0f4ff;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 body{
   font-family:var(--body);
-  background:var(--bg);
+  background:radial-gradient(ellipse at 20% 0%, #0e1845 0%, #05091a 60%);
   color:var(--text);
   min-height:100vh;
   display:flex;
@@ -50,13 +62,13 @@ body::after{
 
 /* ─── Header ──────────────────────────────────────────── */
 header{
-  background:linear-gradient(135deg,#0a1628 0%,#0d1f35 100%);
-  border-bottom:1px solid var(--border);
+  background:linear-gradient(135deg,#060b22 0%,#0d1540 50%,#060b22 100%);
+  border-bottom:2px solid var(--xu-gold);
   padding:0 28px;
-  height:64px;
+  height:68px;
   display:flex;align-items:center;gap:16px;
   position:sticky;top:0;z-index:100;
-  box-shadow:0 2px 20px #00000080;
+  box-shadow:0 2px 30px #00000090, 0 0 40px #f0b42910;
 }
 .logo{
   font-family:var(--display);font-size:26px;font-weight:700;
@@ -64,15 +76,15 @@ header{
   display:flex;align-items:center;gap:10px;
 }
 .logo-p{
-  width:38px;height:38px;border-radius:8px;
-  background:linear-gradient(135deg,var(--accent),#0288d1);
+  width:40px;height:40px;border-radius:8px;
+  background:linear-gradient(135deg,var(--xu-gold),var(--accent-d));
   display:grid;place-items:center;
-  font-size:18px;font-weight:700;color:#fff;
-  box-shadow:0 0 16px #4fc3f740;
+  font-size:18px;font-weight:700;color:#05091a;
+  box-shadow:0 0 18px #f0b42950;
 }
-.logo span{color:var(--accent);}
+.logo span{color:var(--xu-gold);}
 .header-tag{
-  background:#1a2f42;border:1px solid var(--border2);
+  background:#0e1540;border:1px solid var(--border2);
   border-radius:4px;padding:3px 10px;
   font-family:var(--mono);font-size:11px;color:var(--muted);
   letter-spacing:.05em;
@@ -87,9 +99,9 @@ header{
   font-family:var(--mono);font-size:11px;
   transition:all .3s;
 }
-.serial-pill.connected{border-color:#26a65b60;background:#0d2a1a;}
+.serial-pill.connected{border-color:#22c55e60;background:#051a0d;}
 .serial-pill.connected .sdot{background:var(--green-l);box-shadow:0 0 8px var(--green-l);}
-.serial-pill.error{border-color:#c0392b60;background:#2a0d0d;}
+.serial-pill.error{border-color:#ef444460;background:#1a0505;}
 .serial-pill.error .sdot{background:var(--red-l);box-shadow:0 0 8px var(--red-l);}
 .sdot{
   width:8px;height:8px;border-radius:50%;
@@ -100,11 +112,11 @@ header{
 
 /* Connect btn */
 .btn-connect{
-  background:linear-gradient(135deg,#1565c0,var(--accent));
+  background:linear-gradient(135deg,var(--accent-d),var(--xu-gold));
   border:none;border-radius:7px;padding:8px 18px;
   font-family:var(--display);font-size:14px;font-weight:600;
-  color:#fff;cursor:pointer;
-  box-shadow:0 0 16px #4fc3f730;
+  color:#05091a;cursor:pointer;
+  box-shadow:0 0 16px #f0b42940;
   transition:all .2s;letter-spacing:.5px;
 }
 .btn-connect:hover{opacity:.85;transform:translateY(-1px);}
@@ -130,15 +142,6 @@ header{
   letter-spacing:1.5px;text-transform:uppercase;
   color:var(--muted);
 }
-.sec-head2 h3{
-  font-family:var(--display);
-  font-size:18px;
-  font-weight:700;
-  color:#09d4f2; /* BLUE */
-  letter-spacing:1.5px;
-  text-transform:uppercase;
-}
-  
 .sec-head::after{
   content:'';flex:1;height:1px;background:var(--border);
 }
@@ -165,13 +168,13 @@ header{
   animation:cardIn .4s cubic-bezier(.16,1,.3,1) both;
 }
 @keyframes cardIn{
-  from{opacity:0;transform:translateY(14px) scale(.97);}
-  to  {opacity:1;transform:translateY(0)    scale(1);}
+  from{opacity:0;}
+  to  {opacity:1;}
 }
-.park-card:hover{transform:translateY(-3px);box-shadow:0 10px 40px #00000070;}
+.park-card:hover{box-shadow:0 10px 40px #00000070;}
 .park-card.flash{animation:flash .5s ease both;}
 @keyframes flash{
-  0%{border-color:var(--accent);box-shadow:0 0 20px #4fc3f730;}
+  0%{border-color:var(--xu-gold);box-shadow:0 0 20px #f0b42930;}
   100%{border-color:var(--border);box-shadow:none;}
 }
 
@@ -231,22 +234,22 @@ header{
   color:var(--text);font-family:var(--mono);font-size:12px;
   outline:none;transition:border-color .2s;width:220px;
 }
-.search-box:focus{border-color:var(--accent);}
+.search-box:focus{border-color:var(--xu-gold);}
 .filter-btn{
   background:var(--s2);border:1px solid var(--border);
   border-radius:6px;padding:7px 12px;
   color:var(--muted);font-family:var(--mono);font-size:11px;
   cursor:pointer;transition:all .2s;
 }
-.filter-btn.active,.filter-btn:hover{border-color:var(--accent);color:var(--accent);background:#4fc3f710;}
+.filter-btn.active,.filter-btn:hover{border-color:var(--xu-gold);color:var(--xu-gold);background:#f0b42910;}
 .ml-auto{margin-left:auto;}
 .btn-refresh{
   background:var(--s2);border:1px solid var(--border2);
   border-radius:6px;padding:7px 14px;
-  font-family:var(--mono);font-size:11px;color:var(--accent);
+  font-family:var(--mono);font-size:11px;color:var(--xu-gold);
   cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px;
 }
-.btn-refresh:hover{background:#4fc3f710;}
+.btn-refresh:hover{background:#f0b42910;}
 .btn-refresh.spinning .ref-icon{animation:spin .6s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
 .ref-icon{display:inline-block;transition:transform .2s;}
@@ -282,10 +285,9 @@ td{
 tr:last-child td{border-bottom:none;}
 tbody tr:hover{background:var(--s2);}
 tbody tr.new-row{animation:rowIn .4s ease both;}
-@keyframes rowIn{from{background:#4fc3f715;}to{background:transparent;}}
 
 .msg-cell{color:var(--dim);max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.area-cell{color:var(--accent);font-weight:600;}
+.area-cell{color:var(--xu-gold);font-weight:600;}
 .occ-cell{font-weight:500;}
 .status-td{
   font-size:10px;font-weight:600;
@@ -324,7 +326,7 @@ tbody tr.new-row{animation:rowIn .4s ease both;}
 
 /* ─── Toast ───────────────────────────────────────────── */
 #toast{
-  position:fixed;bottom:20px;right:20px;z-index:9998;
+  position:fixed;bottom:86px;right:20px;z-index:9998;
   background:var(--s3);border:1px solid var(--border2);
   border-radius:8px;padding:11px 16px;
   font-family:var(--mono);font-size:12px;color:var(--text);
@@ -334,7 +336,45 @@ tbody tr.new-row{animation:rowIn .4s ease both;}
 }
 #toast.show{transform:translateY(0);opacity:1;}
 
-/* ─── Responsive ──────────────────────────────────────── */
+/* ─── Manual Adjust +/- Buttons ───────────────────────── */
+.card-adjust{
+  display:flex;align-items:center;gap:6px;
+  margin-top:10px;padding-top:10px;
+  border-top:1px solid var(--border);
+}
+.card-adjust-label{
+  font-family:var(--mono);font-size:9px;color:var(--dim);
+  text-transform:uppercase;letter-spacing:.07em;flex:1;
+}
+.btn-adj{
+  width:28px;height:28px;border-radius:6px;
+  border:1px solid var(--border2);
+  font-size:16px;font-weight:700;line-height:1;
+  cursor:pointer;transition:all .15s;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);
+}
+.btn-adj-minus{
+  background:#1a0d0d;color:var(--red-l);border-color:#7f1d1d50;
+}
+.btn-adj-minus:hover{background:#2a0d0d;border-color:var(--red-l);box-shadow:0 0 8px #ef444430;}
+.btn-adj-plus{
+  background:#0d1a0d;color:var(--green-l);border-color:#14532d50;
+}
+.btn-adj-plus:hover{background:#0d2a0d;border-color:var(--green-l);box-shadow:0 0 8px #22c55e30;}
+.btn-adj:active{transform:scale(.93);}
+.btn-adj:disabled{opacity:.35;cursor:default;transform:none;}
+
+/* Summary-row adjust inline */
+.sum-adj{
+  display:flex;align-items:center;gap:5px;margin-top:8px;
+}
+.sum-adj .btn-adj{width:26px;height:26px;font-size:14px;}
+
+/* XU golden row highlight for new-row */
+@keyframes rowIn{from{background:#f0b42915;}to{background:transparent;}}
+</style>
+<style>
 @media(max-width:640px){
   header,.main-wrap{padding-left:14px;padding-right:14px;}
   .logo-name{display:none;}
@@ -346,17 +386,17 @@ tbody tr.new-row{animation:rowIn .4s ease both;}
   border:1px solid var(--border2);
   border-radius:var(--r);
   overflow:hidden;
-  box-shadow:0 0 24px #4fc3f710;
+  box-shadow:0 0 24px #f0b42908;
 }
 .sim-header{
   display:flex;align-items:center;gap:10px;
   padding:12px 16px;
-  background:linear-gradient(90deg,#0a1f35,var(--s2));
+  background:linear-gradient(90deg,#06102e,var(--s2));
   border-bottom:1px solid var(--border);
 }
 .sim-title{
   font-family:var(--mono);font-size:12px;font-weight:600;
-  color:var(--accent);letter-spacing:.08em;text-transform:uppercase;
+  color:var(--xu-gold);letter-spacing:.08em;text-transform:uppercase;
 }
 .sim-status-dot{
   width:8px;height:8px;border-radius:50%;
@@ -398,9 +438,9 @@ tbody tr.new-row{animation:rowIn .4s ease both;}
 .btn-sim-stop:hover{opacity:.85;transform:translateY(-1px);}
 .btn-sim-once{
   background:var(--s2);border:1px solid var(--border2);
-  color:var(--accent);font-size:13px;
+  color:var(--xu-gold);font-size:13px;
 }
-.btn-sim-once:hover{background:#4fc3f710;border-color:var(--accent);}
+.btn-sim-once:hover{background:#f0b42910;border-color:var(--xu-gold);}
 .btn-sim:active{transform:scale(.97);}
 .btn-sim:disabled{opacity:.35;cursor:default;transform:none;}
 
@@ -418,12 +458,12 @@ input[type=range].sim-slider{
 }
 input[type=range].sim-slider::-webkit-slider-thumb{
   -webkit-appearance:none;width:14px;height:14px;border-radius:50%;
-  background:var(--accent);cursor:pointer;
-  box-shadow:0 0 6px #4fc3f750;
+  background:var(--xu-gold);cursor:pointer;
+  box-shadow:0 0 6px #f0b42970;
 }
 #sim-interval-lbl{
-  font-family:var(--mono);font-size:11px;color:var(--accent);
-  min-width:60px;
+  font-family:var(--mono);font-size:11px;color:var(--xu-gold);
+  min-width:130px;
 }
 
 /* Manual area buttons */
@@ -438,7 +478,7 @@ input[type=range].sim-slider::-webkit-slider-thumb{
   font-family:var(--mono);font-size:11px;color:var(--text);
   cursor:pointer;transition:all .15s;
 }
-.btn-area:hover{border-color:var(--accent);color:var(--accent);background:#4fc3f710;}
+.btn-area:hover{border-color:var(--xu-gold);color:var(--xu-gold);background:#f0b42910;}
 
 /* Next-fire countdown bar */
 .sim-countdown{
@@ -448,16 +488,385 @@ input[type=range].sim-slider::-webkit-slider-thumb{
   flex:1;height:3px;background:var(--s3);border-radius:999px;overflow:hidden;
 }
 .countdown-fill{
-  height:100%;background:var(--accent);border-radius:999px;
+  height:100%;background:var(--xu-gold);border-radius:999px;
   transition:width .25s linear;
 }
 #countdown-lbl{
   font-family:var(--mono);font-size:10px;color:var(--dim);
   white-space:nowrap;min-width:56px;text-align:right;
 }
+
+/* ════════════════════════════════════════════════════════
+   LIGHT THEME
+════════════════════════════════════════════════════════ */
+body.light-mode {
+  --bg:       #f0f2fa;
+  --surface:  #ffffff;
+  --s2:       #e8ecf8;
+  --s3:       #dde2f5;
+  --border:   #c0caec;
+  --border2:  #99aadf;
+  --text:     #1a2060;
+  --muted:    #5566aa;
+  --dim:      #8899cc;
+  --accent:   #c8941a;
+  --accent-l: #f0b429;
+  --accent-d: #a07010;
+  --xu-navy:  #f0f2fa;
+  --xu-blue:  #dde4f8;
+  --xu-gold:  #b07800;
+  --xu-white: #1a2060;
+}
+body.light-mode {
+  background: radial-gradient(ellipse at 20% 0%, #dde6ff 0%, #f0f2fa 60%);
+}
+body.light-mode header {
+  background: linear-gradient(135deg,#1a2575 0%,#243090 50%,#1a2575 100%);
+}
+body.light-mode .logo-p { color:#1a2575; }
+body.light-mode .header-tag { background:#1e2d80; color:#aabae8; border-color:#2a3d9f; }
+body.light-mode .serial-pill { background:#1e2d80; border-color:#2a3d9f; color:#e8ecf8; }
+body.light-mode #serial-label { color:#e8ecf8; }
+body.light-mode .mon-body { background:#1a2050; color:#4ade80; }
+body.light-mode .xu-brand-name { color:#f0b429; }
+body.light-mode .xu-brand-sub { color:#aabae8; }
+body.light-mode .btn-connect { color:#1a2575; }
+body.light-mode .chip-green { background:#d4f5e0; color:#155a30; border-color:#26a65b60; }
+body.light-mode .chip-amber { background:#fff3cc; color:#7a4e00; border-color:#d4a01760; }
+body.light-mode .chip-red   { background:#fde8e8; color:#7a1515; border-color:#c0392b60; }
+body.light-mode .area-name  { color:#1a2060; }
+body.light-mode .slots-big  { color:#1a2060; }
+body.light-mode .area-cell  { color:#c8941a; }
+body.light-mode .sec-head h2 { color:#6677bb; }
+body.light-mode .sec-head::after { background:#c0caec; }
+body.light-mode .sum-val    { color:#1a2060; }
+body.light-mode th { background:#dde2f5; color:#5566aa; border-color:#c0caec; }
+body.light-mode td { color:#1a2060; border-color:#c0caec; }
+body.light-mode tbody tr:hover { background:#eef0fc; }
+body.light-mode .sim-header { background:linear-gradient(90deg,#dde4f8,#e8ecf8); }
+body.light-mode .btn-adj-minus { background:#fde8e8; color:#b91c1c; border-color:#ef444450; }
+body.light-mode .btn-adj-plus  { background:#d4f5e0; color:#155a30; border-color:#22c55e50; }
+body.light-mode #toast { background:#fff; border-color:#c0caec; color:#1a2060; }
+body.light-mode .sec-badge { background:#e8ecf8; color:#8899cc; border-color:#c0caec; }
+body.light-mode .search-box { background:#e8ecf8; border-color:#c0caec; color:#1a2060; }
+body.light-mode .filter-btn { background:#e8ecf8; border-color:#c0caec; color:#5566aa; }
+body.light-mode .filter-btn.active,body.light-mode .filter-btn:hover { background:#fff3cc; color:#7a4e00; border-color:#c8941a; }
+body.light-mode .btn-refresh { background:#e8ecf8; border-color:#99aadf; color:#c8941a; }
+body.light-mode .btn-sim-once { background:#e8ecf8; border-color:#99aadf; color:#c8941a; }
+body.light-mode .btn-area { background:#e8ecf8; border-color:#c0caec; color:#1a2060; }
+body.light-mode .btn-area:hover { background:#fff3cc; color:#7a4e00; border-color:#c8941a; }
+body.light-mode .mon-header { background:#dde2f5; }
+body.light-mode .mon-title { color:#5566aa; }
+body.light-mode .mon-toggle { color:#8899cc; }
+body.light-mode .sec-head2 h3 { color:#c8941a; }
+body.light-mode .card-adjust { border-top-color:#c0caec; }
+body.light-mode .card-adjust-label { color:#8899cc; }
+body.light-mode .xu-campus-heading { color:#c8941a; }
+
+/* ════════════════════════════════════════════════════════
+   GEAR BUTTON (Theme Toggle) — bottom-right FAB
+════════════════════════════════════════════════════════ */
+.fab-gear {
+  position:fixed; bottom:80px; right:22px; z-index:9000;
+  width:46px; height:46px; border-radius:50%;
+  background:linear-gradient(135deg,var(--accent-d),var(--xu-gold));
+  border:none; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 4px 20px #f0b42940;
+  transition:transform .25s, box-shadow .25s;
+  font-size:20px;
+}
+.fab-gear:hover { transform:rotate(40deg) scale(1.08); box-shadow:0 6px 28px #f0b42960; }
+.fab-gear:active { transform:scale(.93); }
+
+/* ════════════════════════════════════════════════════════
+   HELP BUTTON (?) — bottom-right FAB
+════════════════════════════════════════════════════════ */
+.fab-help {
+  position:fixed; bottom:22px; right:22px; z-index:9000;
+  width:46px; height:46px; border-radius:50%;
+  background:linear-gradient(135deg,#1a2575,#283daa);
+  border:2px solid var(--xu-gold); cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 4px 20px #00000060, 0 0 0 0 #f0b42940;
+  font-family:var(--display); font-size:22px; font-weight:700; color:var(--xu-gold);
+  transition:transform .2s, box-shadow .2s;
+  animation:helpPulse 3s ease-in-out infinite;
+}
+.fab-help:hover { transform:scale(1.1); box-shadow:0 6px 30px #f0b42950; animation:none; }
+.fab-help:active { transform:scale(.93); }
+@keyframes helpPulse {
+  0%,100% { box-shadow:0 4px 20px #00000060, 0 0 0 0 #f0b42960; }
+  50%      { box-shadow:0 4px 20px #00000060, 0 0 0 8px transparent; }
+}
+
+/* ════════════════════════════════════════════════════════
+   MODAL BACKDROP
+════════════════════════════════════════════════════════ */
+.modal-backdrop {
+  position:fixed; inset:0; z-index:10000;
+  background:rgba(5,9,26,.85);
+  backdrop-filter:blur(6px);
+  display:flex; align-items:center; justify-content:center;
+  padding:16px;
+  opacity:0; pointer-events:none;
+  transition:opacity .25s;
+}
+.modal-backdrop.open { opacity:1; pointer-events:all; }
+
+/* ════════════════════════════════════════════════════════
+   PASSWORD MODAL
+════════════════════════════════════════════════════════ */
+.pw-modal {
+  background:var(--surface);
+  border:2px solid var(--xu-gold);
+  border-radius:16px;
+  padding:36px 32px 28px;
+  width:100%; max-width:360px;
+  box-shadow:0 24px 80px #000000a0, 0 0 40px #f0b42920;
+  display:flex; flex-direction:column; align-items:center; gap:16px;
+  transform:translateY(20px) scale(.97);
+  transition:transform .3s cubic-bezier(.16,1,.3,1);
+  position:relative;
+}
+.modal-backdrop.open .pw-modal { transform:translateY(0) scale(1); }
+.pw-logo-badge {
+  width:56px; height:56px; border-radius:12px;
+  background:linear-gradient(135deg,var(--xu-gold),var(--accent-d));
+  display:grid; place-items:center;
+  font-family:var(--display); font-size:26px; font-weight:700; color:#05091a;
+  box-shadow:0 0 24px #f0b42950;
+  margin-bottom:4px;
+}
+.pw-title {
+  font-family:var(--display); font-size:22px; font-weight:700;
+  color:var(--xu-gold); letter-spacing:1px; text-align:center;
+}
+.pw-subtitle {
+  font-family:var(--mono); font-size:11px; color:var(--muted);
+  text-align:center; letter-spacing:.06em;
+  line-height:1.6;
+}
+.pw-input {
+  width:100%; padding:12px 16px;
+  background:var(--s2); border:1.5px solid var(--border2);
+  border-radius:8px; color:var(--text);
+  font-family:var(--mono); font-size:16px; letter-spacing:.2em;
+  text-align:center; outline:none;
+  transition:border-color .2s, box-shadow .2s;
+}
+.pw-input:focus { border-color:var(--xu-gold); box-shadow:0 0 0 3px #f0b42920; }
+.pw-input.pw-error { border-color:var(--red-l); animation:shake .35s ease both; }
+@keyframes shake {
+  0%,100%{transform:translateX(0);}
+  20%{transform:translateX(-8px);}
+  40%{transform:translateX(8px);}
+  60%{transform:translateX(-5px);}
+  80%{transform:translateX(5px);}
+}
+.pw-error-msg {
+  font-family:var(--mono); font-size:11px; color:var(--red-l);
+  text-align:center; min-height:16px;
+}
+.pw-btn {
+  width:100%; padding:12px;
+  background:linear-gradient(135deg,var(--accent-d),var(--xu-gold));
+  border:none; border-radius:8px;
+  font-family:var(--display); font-size:16px; font-weight:700;
+  color:#05091a; cursor:pointer; letter-spacing:.5px;
+  box-shadow:0 0 20px #f0b42940;
+  transition:opacity .2s, transform .2s;
+}
+.pw-btn:hover { opacity:.88; transform:translateY(-1px); }
+.pw-btn:active { transform:scale(.97); }
+.pw-contact {
+  font-family:var(--mono); font-size:11px; color:var(--muted);
+  text-decoration:none; text-align:center;
+  border-bottom:1px dashed var(--border2);
+  padding-bottom:2px;
+  transition:color .2s, border-color .2s;
+}
+.pw-contact:hover { color:var(--xu-gold); border-color:var(--xu-gold); }
+
+/* ════════════════════════════════════════════════════════
+   HELP MODAL
+════════════════════════════════════════════════════════ */
+.help-modal {
+  background:var(--surface);
+  border:1.5px solid var(--border2);
+  border-radius:16px;
+  width:100%; max-width:680px;
+  max-height:90vh;
+  overflow-y:auto;
+  box-shadow:0 24px 80px #000000a0;
+  transform:translateY(20px) scale(.97);
+  transition:transform .3s cubic-bezier(.16,1,.3,1);
+}
+.modal-backdrop.open .help-modal { transform:translateY(0) scale(1); }
+.help-modal::-webkit-scrollbar { width:5px; }
+.help-modal::-webkit-scrollbar-thumb { background:var(--border2); border-radius:3px; }
+
+.help-header {
+  background:linear-gradient(135deg,#060b22,#0d1540);
+  border-bottom:2px solid var(--xu-gold);
+  padding:20px 24px 16px;
+  position:sticky; top:0; z-index:10;
+  display:flex; align-items:center; gap:14px;
+}
+.help-header-icon {
+  width:40px; height:40px; border-radius:8px;
+  background:linear-gradient(135deg,var(--xu-gold),var(--accent-d));
+  display:grid; place-items:center;
+  font-size:20px; flex-shrink:0;
+}
+.help-header-text h2 {
+  font-family:var(--display); font-size:20px; font-weight:700;
+  color:var(--xu-gold); letter-spacing:1px;
+}
+.help-header-text p {
+  font-family:var(--mono); font-size:10px; color:var(--muted);
+  letter-spacing:.06em; margin-top:2px;
+}
+.help-close {
+  margin-left:auto; background:none; border:1px solid var(--border2);
+  border-radius:6px; width:32px; height:32px; cursor:pointer;
+  color:var(--muted); font-size:16px; display:grid; place-items:center;
+  transition:all .2s;
+}
+.help-close:hover { border-color:var(--red-l); color:var(--red-l); background:#2a0d0d; }
+
+.help-body { padding:20px 24px 28px; display:flex; flex-direction:column; gap:0; }
+
+.help-section {
+  border-bottom:1px solid var(--border);
+  padding:16px 0;
+}
+.help-section:last-child { border-bottom:none; }
+.help-section-title {
+  font-family:var(--display); font-size:13px; font-weight:700;
+  color:var(--xu-gold); letter-spacing:1.2px; text-transform:uppercase;
+  display:flex; align-items:center; gap:8px;
+  margin-bottom:10px;
+}
+.help-section-icon { font-size:15px; }
+.help-item {
+  display:flex; gap:10px; margin-bottom:8px;
+  font-family:var(--body); font-size:13px; color:var(--text); line-height:1.55;
+}
+.help-item:last-child { margin-bottom:0; }
+.help-bullet {
+  width:20px; height:20px; border-radius:5px; flex-shrink:0; margin-top:1px;
+  background:var(--s3); border:1px solid var(--border2);
+  display:grid; place-items:center;
+  font-family:var(--mono); font-size:10px; color:var(--xu-gold); font-weight:700;
+}
+.help-tag {
+  display:inline-block; font-family:var(--mono); font-size:10px;
+  background:var(--s3); border:1px solid var(--border); border-radius:4px;
+  padding:1px 6px; color:var(--xu-gold); white-space:nowrap; vertical-align:middle;
+  margin:0 2px;
+}
+.help-note {
+  background:var(--s2); border-left:3px solid var(--xu-gold);
+  border-radius:0 6px 6px 0; padding:10px 14px; margin-top:10px;
+  font-family:var(--mono); font-size:11px; color:var(--muted); line-height:1.6;
+}
+.help-badge-green { color:var(--green-l); }
+.help-badge-amber { color:#f1c40f; }
+.help-badge-red   { color:var(--red-l); }
 </style>
 </head>
 <body>
+
+<!-- ── Password Gate Modal ── -->
+<div class="modal-backdrop open" id="pw-backdrop">
+  <div class="pw-modal">
+    <div class="pw-logo-badge">P</div>
+    <div class="pw-title">ParkNav Admin</div>
+    <div class="pw-subtitle">Xavier University · Ateneo de Cagayan<br>Enter your admin password to continue.</div>
+    <input class="pw-input" id="pw-input" type="password" placeholder="••••••••"
+      maxlength="20" autocomplete="off"
+      onkeydown="if(event.key==='Enter')checkPassword()"/>
+    <div class="pw-error-msg" id="pw-error"></div>
+    <button class="pw-btn" onclick="checkPassword()">Unlock Dashboard</button>
+    <a class="pw-contact" href="https://m.me/gbrex1976" target="_blank" rel="noopener">Contact Admin</a>
+  </div>
+</div>
+
+<!-- ── Help Modal ── -->
+<div class="modal-backdrop" id="help-backdrop" onclick="closeHelp(event)">
+  <div class="help-modal">
+    <div class="help-header">
+      <div class="help-header-icon">❓</div>
+      <div class="help-header-text">
+        <h2>ParkNav Help Guide</h2>
+        <p>XAVIER UNIVERSITY · ATENEO DE CAGAYAN · ADMIN DASHBOARD</p>
+      </div>
+      <button class="help-close" aria-label="Close help guide" onclick="closeHelpBtn()">✕</button>
+    </div>
+    <div class="help-body">
+
+      <div class="help-section">
+        <div class="help-section-title"><span class="help-section-icon">🔌</span> Arduino Connection</div>
+        <div class="help-item"><div class="help-bullet">1</div><div>Click <span class="help-tag">Connect Arduino</span> in the top-right corner of the header to open the browser's serial port selector.</div></div>
+        <div class="help-item"><div class="help-bullet">2</div><div>Select the correct COM port your Arduino is plugged into (usually labelled <em>USB Serial</em> or <em>CH340</em>). The system connects at <strong>9600 baud</strong>.</div></div>
+        <div class="help-item"><div class="help-bullet">3</div><div>Once connected, the status pill turns <span class="help-badge-green">● green</span>. Parking data will start flowing automatically from the Arduino sensors.</div></div>
+        <div class="help-item"><div class="help-bullet">4</div><div>To disconnect, click the button again. <strong>Note:</strong> Web Serial only works in Chrome or Edge browsers.</div></div>
+      </div>
+
+      <div class="help-section">
+        <div class="help-section-title"><span class="help-section-icon">🅿️</span> Parking Dashboard Cards</div>
+        <div class="help-item"><div class="help-bullet">✦</div><div>Each card represents one parking lot: <strong>Museum</strong> (cap. 6), <strong>CH</strong> (cap. 4), and <strong>Loyola</strong> (cap. 6).</div></div>
+        <div class="help-item"><div class="help-bullet">✦</div><div>The large number shows <em>Occupied / Capacity</em>. The gauge bar fills as the lot fills up.</div></div>
+        <div class="help-item"><div class="help-bullet">✦</div><div>Status chips: <span class="help-badge-green">● AVAILABLE</span> = slots free · <span class="help-badge-amber">● FILLING UP</span> = ≥75% full · <span class="help-badge-red">● FULL</span> = at capacity.</div></div>
+      </div>
+
+      <div class="help-section">
+        <div class="help-section-title"><span class="help-section-icon">✎</span> Manual Count Adjustment (±)</div>
+        <div class="help-item"><div class="help-bullet">+</div><div>Use the <span class="help-tag">+</span> button on a card or the Campus Total summary box to <strong>increase</strong> the occupied count by 1 — e.g., a car entered but the sensor missed it.</div></div>
+        <div class="help-item"><div class="help-bullet">−</div><div>Use the <span class="help-tag">−</span> button to <strong>decrease</strong> the occupied count by 1 — e.g., a car left without triggering the sensor.</div></div>
+        <div class="help-item"><div class="help-bullet">✦</div><div>Every adjustment is immediately sent to Google Sheets with a <span class="help-tag">[MANUAL ADJ]</span> tag so you have a full audit trail.</div></div>
+        <div class="help-note">⚠ Adjustments clamp within 0 and the lot's maximum capacity — they cannot go negative or exceed the limit.</div>
+      </div>
+
+      <div class="help-section">
+        <div class="help-section-title"><span class="help-section-icon">🤖</span> Arduino Simulator</div>
+        <div class="help-item"><div class="help-bullet">▶</div><div><span class="help-tag">Start Auto</span> — begins a realistic campus traffic simulation with vehicle arrivals, parking, and drop-offs following real time-of-day patterns. Use the Speed slider to control simulation pace.</div></div>
+        <div class="help-item"><div class="help-bullet">■</div><div><span class="help-tag">Stop</span> — halts the automatic simulation. The countdown bar resets.</div></div>
+        <div class="help-item"><div class="help-bullet">↯</div><div><span class="help-tag">Fire Once</span> — sends a single random update immediately without starting the full auto cycle.</div></div>
+        <div class="help-item"><div class="help-bullet">✦</div><div><strong>Manual fire buttons</strong> (Museum / CH / Loyola / Campus Total) let you trigger a specific lot's update on demand.</div></div>
+        <div class="help-note">The simulator feeds data through the exact same parsing pipeline as the real Arduino — output is identical.</div>
+      </div>
+
+      <div class="help-section">
+        <div class="help-section-title"><span class="help-section-icon">📋</span> Message Log & Google Sheets</div>
+        <div class="help-item"><div class="help-bullet">✦</div><div>Every parking update is automatically saved to the connected Google Sheet via Apps Script. The log refreshes every 30 seconds.</div></div>
+        <div class="help-item"><div class="help-bullet">✦</div><div>Use the <span class="help-tag">Search</span> box to filter log entries by keyword. Use the filter buttons (All / Museum / CH / Loyola / Campus Total) to narrow by area.</div></div>
+        <div class="help-item"><div class="help-bullet">✦</div><div>Click <span class="help-tag">↻ Refresh Log</span> to manually pull the latest data from Google Sheets at any time.</div></div>
+        <div class="help-item"><div class="help-bullet">✦</div><div>Log columns: <em>Message · Date · Time · Area · Occupied · Capacity · Free · Status · Fill %</em>.</div></div>
+      </div>
+
+      <div class="help-section">
+        <div class="help-section-title"><span class="help-section-icon">⚡</span> Serial Monitor</div>
+        <div class="help-item"><div class="help-bullet">✦</div><div>The serial monitor panel shows every raw message received from the Arduino (or simulator) in real time, color-coded by type: <span class="help-badge-green">info</span> · <span class="help-badge-amber">warn</span> · <span class="help-badge-red">err</span>.</div></div>
+        <div class="help-item"><div class="help-bullet">✦</div><div>Click the panel header to <strong>collapse or expand</strong> the monitor. It keeps the last 200 lines.</div></div>
+      </div>
+
+      <div class="help-section">
+        <div class="help-section-title"><span class="help-section-icon">🎨</span> Theme & Display</div>
+        <div class="help-item"><div class="help-bullet">⚙</div><div>Click the <span class="help-tag">⚙</span> gear button (floating lower-right, above the ? button) to toggle between <strong>Dark Mode</strong> (default) and <strong>Light Mode</strong>.</div></div>
+        <div class="help-item"><div class="help-bullet">?</div><div>Click the <span class="help-tag">?</span> help button (floating lower-right) to show this guide at any time.</div></div>
+      </div>
+
+      <div class="help-section">
+        <div class="help-section-title"><span class="help-section-icon">📞</span> Support</div>
+        <div class="help-item"><div class="help-bullet">✦</div><div>For technical issues or password resets, contact the system administrator via Messenger.</div></div>
+        <div class="help-item"><div class="help-bullet">✦</div><div><a href="https://m.me/gbrex1976" target="_blank" rel="noopener" style="color:var(--xu-gold);text-decoration:none;border-bottom:1px dashed var(--xu-gold);">m.me/gbrex1976</a> — tap to open Facebook Messenger.</div></div>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 <!-- ── Header ── -->
 <header>
@@ -479,7 +888,10 @@ input[type=range].sim-slider::-webkit-slider-thumb{
 
   <!-- ── Summary bar ── -->
   <div>
-    <div class="sec-head2"><h3>X.U. COLLEGE CAMPUS</h3></div>
+    <div style="margin-bottom:6px;">
+      <div style="font-family:var(--display);font-size:28px;font-weight:700;color:var(--xu-gold);letter-spacing:2px;text-transform:uppercase;line-height:1.1;" class="xu-campus-heading">Xavier University</div>
+      <div style="font-family:var(--display);font-size:13px;font-weight:600;color:var(--muted);letter-spacing:3px;text-transform:uppercase;margin-bottom:14px;">Ateneo de Cagayan</div>
+    </div>
     <div class="sec-head"><h2>Parking Lot Overview</h2><div class="sec-badge" id="last-update-badge">—</div></div>
     <div id="summary-bar">
       <div class="sum-box">
@@ -491,6 +903,11 @@ input[type=range].sim-slider::-webkit-slider-thumb{
         <div class="sum-label">Total Occupied</div>
         <div class="sum-val" id="s-total-occ">—</div>
         <div class="sum-sub">Campus Parking total</div>
+        <div class="sum-adj">
+          <button class="btn-adj btn-adj-minus" title="Decrease campus occupied count" onclick="adjustCampus(-1)">−</button>
+          <span style="font-family:var(--mono);font-size:9px;color:var(--dim)">ADJUST</span>
+          <button class="btn-adj btn-adj-plus"  title="Increase campus occupied count" onclick="adjustCampus(+1)">+</button>
+        </div>
       </div>
       <div class="sum-box">
         <div class="sum-label">Total Available</div>
@@ -509,7 +926,7 @@ input[type=range].sim-slider::-webkit-slider-thumb{
   <div>
     <div class="sec-head"><h2>Parking Areas</h2><div class="sec-badge" id="area-count-badge">0 AREAS</div></div>
     <div id="dashboard">
-      <div style="grid-column:1/-1;text-align:center;padding:50px 20px;color:var(--muted);font-family:var(--mono);font-size:13px;">
+      <div data-placeholder style="grid-column:1/-1;text-align:center;padding:50px 20px;color:var(--muted);font-family:var(--mono);font-size:13px;">
         📡 Connect Arduino or wait for data from Google Sheet…
       </div>
     </div>
@@ -523,8 +940,9 @@ input[type=range].sim-slider::-webkit-slider-thumb{
     </div>
     <div class="sim-panel">
       <div class="sim-header">
-        <div class="sim-title">🔌 Virtual Arduino — Serial Output Simulator</div>
-        <div class="sim-status-lbl" id="sim-status-lbl">Idle</div>
+        <div class="sim-title">🔌 Virtual Arduino — Campus Traffic Simulator</div>
+        <div style="font-family:var(--mono);font-size:11px;color:var(--muted);margin-left:auto;margin-right:10px;" id="sim-clock-lbl">🕐 —:—</div>
+        <div class="sim-status-lbl" id="sim-status-lbl">Stopped</div>
         <div class="sim-status-dot" id="sim-status-dot"></div>
       </div>
       <div class="sim-body">
@@ -544,11 +962,13 @@ input[type=range].sim-slider::-webkit-slider-thumb{
 
         <!-- Interval slider -->
         <div class="sim-slider-row">
-          <label>Interval:</label>
+          <label>Speed:</label>
+          <span style="font-family:var(--mono);font-size:10px;color:var(--muted);">Slow</span>
           <input type="range" class="sim-slider" id="sim-slider"
-            min="3" max="10" value="5" step="1"
+            min="1" max="10" value="1" step="1"
             oninput="simUpdateInterval(this.value)"/>
-          <span id="sim-interval-lbl">3 – 10 s (random)</span>
+          <span style="font-family:var(--mono);font-size:10px;color:var(--muted);">Fast</span>
+          <span id="sim-interval-lbl">1× — Very Slow</span>
         </div>
 
         <!-- Countdown bar -->
@@ -623,8 +1043,12 @@ input[type=range].sim-slider::-webkit-slider-thumb{
 
 </div><!-- /main-wrap -->
 
+<!-- Floating Action Buttons -->
+<button class="fab-gear" id="fab-gear" aria-label="Toggle Light/Dark Theme" title="Toggle Light/Dark Theme" onclick="toggleTheme()">⚙</button>
+<button class="fab-help" id="fab-help" aria-label="Open Help Guide" title="Help Guide" onclick="openHelp()">?</button>
+
 <!-- Toast -->
-<div id="toast"></div>
+<div id="toast" role="alert" aria-live="polite"></div>
 
 <script>
 // ════════════════════════════════════════════════════════
@@ -689,7 +1113,7 @@ async function disconnectSerial() {
 
 async function readSerial() {
   const decoder = new TextDecoderStream();
-  serialPort.readable.pipeTo(decoder.writable);
+  const pipeProm = serialPort.readable.pipeTo(decoder.writable);
   const reader = decoder.readable.getReader();
   serialReader = reader;
 
@@ -698,9 +1122,8 @@ async function readSerial() {
       const { value, done } = await reader.read();
       if (done) break;
       serialBuffer += value;
-      // Process complete lines
       const lines = serialBuffer.split('\n');
-      serialBuffer = lines.pop(); // keep incomplete last line
+      serialBuffer = lines.pop();
       lines.forEach(line => {
         const trimmed = line.trim();
         if (trimmed) processLine(trimmed);
@@ -731,11 +1154,13 @@ function setSerialUI(connected) {
 //   "ParkNav Alert: Loyola Parking (5/6)"        ← specific area card
 const PATTERN = /(?:Area)?ParkNav Alert:\s*(.+?)\s*Parking\s*\((\d+)\/(\d+)\)/i;
 
+// Track whether we've warned about missing URL (show only once, not on every tick)
+let _urlWarnShown = false;
+
 function processLine(raw) {
-  monLog(raw);
   const m = raw.match(PATTERN);
   if (!m) {
-    if (raw.toLowerCase().includes('parknav')) monLog('⚠ Unrecognised ParkNav format', 'warn');
+    if (raw.toLowerCase().includes('parknav')) monLog('⚠ Unrecognised ParkNav format: ' + raw, 'warn');
     return;
   }
   const area     = normArea(m[1].trim());
@@ -748,21 +1173,23 @@ function processLine(raw) {
   totalMessages++;
 
   if (area === 'Campus') {
-    // Campus = campus-wide total — store separately, update summary only, NO dashboard card
     campusTotal = { occupied, capacity, available, fillPct, updatedAt: Date.now() };
-    monLog(`✓ Campus Total → ${occupied}/${capacity} total slots [campus-wide]`, 'info');
+    monLog(`✓ Campus Total → ${occupied}/${capacity} [campus-wide]`, 'info');
   } else {
-    // CH, Museum, Loyola — specific area cards
     parkingState[area] = { occupied, capacity, available, status, fillPct, updatedAt: Date.now() };
-    monLog(`✓ Parsed → ${area} ${occupied}/${capacity} [${status.toUpperCase()}]`, 'info');
+    monLog(`✓ ${area} → ${occupied}/${capacity} [${status.toUpperCase()}]`, 'info');
     updateDashboard();
   }
 
   updateSummary();
 
-  // Save to Google Sheet
-  if (SCRIPT_URL && SCRIPT_URL !== 'YOUR_APPS_SCRIPT_URL_HERE') saveToSheet({ message: raw, area, occupied, capacity, available, status, fillPct });
-  else toast('⚠ Apps Script URL not set in the HTML file');
+  if (SCRIPT_URL && SCRIPT_URL !== 'YOUR_APPS_SCRIPT_URL_HERE') {
+    saveToSheet({ message: raw, area, occupied, capacity, available, status, fillPct });
+  } else if (!_urlWarnShown) {
+    _urlWarnShown = true;
+    monLog('⚠ Apps Script URL not configured — data will not be saved to Sheet', 'warn');
+    toast('⚠ Apps Script URL not set in the HTML file');
+  }
 }
 
 function normArea(raw) {
@@ -796,8 +1223,6 @@ async function saveToSheet(data) {
     const json = await res.json();
     if (json.ok) {
       monLog(`☁ Saved to Sheet: ${data.area}`, 'info');
-      // Refresh log after short delay
-      setTimeout(fetchLog, 1200);
     } else {
       monLog('Sheet save error: ' + json.error, 'err');
     }
@@ -897,7 +1322,7 @@ function updateDashboard() {
       refreshCard(id, area);
     } else {
       const card = buildCard(area, id);
-      card.style.animationDelay = i * .08 + 's';
+      card.style.animationDelay = '0s';
       // Remove placeholder if present
       const ph = container.querySelector('[data-placeholder]');
       if (ph) ph.remove();
@@ -928,6 +1353,11 @@ function buildCard(area, id) {
         <div class="upd-time">↻ ${fmtTime(d.updatedAt)}</div>
         <div style="font-family:var(--mono);font-size:10px;color:var(--dim)">${pct}% full</div>
       </div>
+      <div class="card-adjust">
+        <div class="card-adjust-label">Manual Adjust</div>
+        <button class="btn-adj btn-adj-minus" title="Decrease occupied (-1)" onclick="adjustArea('${area}',-1)">−</button>
+        <button class="btn-adj btn-adj-plus"  title="Increase occupied (+1)" onclick="adjustArea('${area}',+1)">+</button>
+      </div>
     </div>`;
   return card;
 }
@@ -951,9 +1381,12 @@ function refreshCard(id, area) {
   card.querySelector('.card-foot div:last-child').textContent = pct + '% full';
 
   card.classList.remove('flash');
-  void card.offsetWidth;
-  card.classList.add('flash');
-  setTimeout(()=>card.classList.remove('flash'), 600);
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      card.classList.add('flash');
+      setTimeout(()=>card.classList.remove('flash'), 600);
+    });
+  });
 }
 
 function updateSummary() {
@@ -1038,8 +1471,13 @@ function monLog(msg, type='') {
   line.textContent = `[${ts}] ${msg}`;
   body.appendChild(line);
   body.scrollTop = body.scrollHeight;
-  // Keep max 200 lines
-  while (body.children.length > 200) body.removeChild(body.firstChild);
+  // Efficient trim: remove oldest 20 at once when over 200
+  if (body.children.length > 220) {
+    const frag = document.createDocumentFragment();
+    Array.from(body.children).slice(-200).forEach(el => frag.appendChild(el));
+    body.innerHTML = '';
+    body.appendChild(frag);
+  }
 }
 
 function toggleMonitor() {
@@ -1071,38 +1509,292 @@ function toast(msg) {
   toastTimer = setTimeout(()=>el.classList.remove('show'), 3000);
 }
 
-// Auto-refresh log every 30s when URL is set
-setInterval(()=>{ if(SCRIPT_URL && SCRIPT_URL !== 'YOUR_APPS_SCRIPT_URL_HERE') fetchLog(); }, 30000);
+// Auto-refresh log every 30s — pauses when tab is hidden
+setInterval(()=>{
+  if (document.hidden) return;
+  if (SCRIPT_URL && SCRIPT_URL !== 'YOUR_APPS_SCRIPT_URL_HERE') fetchLog();
+}, 30000);
 
 // ════════════════════════════════════════════════════════
-//  ARDUINO SIMULATOR
-//  Calls processLine() directly — the exact same function
-//  that the real Web Serial path uses. Output is identical.
+//  MANUAL ADJUST +/- (per area card & campus total)
+//  Directly updates state, dashboard, and Google Sheet.
+// ════════════════════════════════════════════════════════
+
+function adjustArea(area, delta) {
+  const s = parkingState[area];
+  if (!s) { toast('⚠ No data for ' + area + ' yet. Wait for first reading.'); return; }
+
+  const newOcc = Math.max(0, Math.min(s.capacity, s.occupied + delta));
+  if (newOcc === s.occupied) {
+    toast(`⚠ ${area} already at ${delta > 0 ? 'max capacity' : 'zero'}.`);
+    return;
+  }
+
+  const available = Math.max(0, s.capacity - newOcc);
+  const status    = getStatus(newOcc, s.capacity);
+  const fillPct   = s.capacity ? Math.round((newOcc / s.capacity) * 100) : 100;
+
+  parkingState[area] = { ...s, occupied: newOcc, available, status, fillPct, updatedAt: Date.now() };
+
+  updateDashboard();
+  updateSummary();
+
+  const msg = `ParkNav Alert: ${area} Parking (${newOcc}/${s.capacity})`;
+  monLog(`[ADJ] Manual adjust → ${area}: ${s.occupied} → ${newOcc} (${delta > 0 ? '+' : ''}${delta})`, 'info');
+  toast(`✎ ${area} adjusted to ${newOcc}/${s.capacity}`);
+
+  // Save correction to Google Sheet
+  if (SCRIPT_URL && SCRIPT_URL !== 'YOUR_APPS_SCRIPT_URL_HERE') {
+    saveToSheet({ message: msg + ' [MANUAL ADJ]', area, occupied: newOcc, capacity: s.capacity, available, status, fillPct });
+  } else {
+    toast('⚠ Apps Script URL not set — adjustment not saved to Sheet');
+  }
+}
+
+function adjustCampus(delta) {
+  // Campus total adjust — works on campusTotal state
+  if (!campusTotal) { toast('⚠ No campus total data yet. Wait for first reading.'); return; }
+
+  const newOcc  = Math.max(0, Math.min(campusTotal.capacity, campusTotal.occupied + delta));
+  if (newOcc === campusTotal.occupied) {
+    toast(`⚠ Campus already at ${delta > 0 ? 'max capacity' : 'zero'}.`);
+    return;
+  }
+
+  const available = Math.max(0, campusTotal.capacity - newOcc);
+  const fillPct   = campusTotal.capacity ? Math.round((newOcc / campusTotal.capacity) * 100) : 100;
+  const oldOcc    = campusTotal.occupied;
+
+  campusTotal = { ...campusTotal, occupied: newOcc, available, fillPct, updatedAt: Date.now() };
+  updateSummary();
+
+  const msg = `AreaParkNav Alert: Campus Parking (${newOcc}/${campusTotal.capacity})`;
+  monLog(`[ADJ] Manual adjust → Campus Total: ${oldOcc} → ${newOcc} (${delta > 0 ? '+' : ''}${delta})`, 'info');
+  toast(`✎ Campus Total adjusted to ${newOcc}/${campusTotal.capacity}`);
+
+  if (SCRIPT_URL && SCRIPT_URL !== 'YOUR_APPS_SCRIPT_URL_HERE') {
+    saveToSheet({ message: msg + ' [MANUAL ADJ]', area: 'Campus', occupied: newOcc, capacity: campusTotal.capacity, available, status: getStatus(newOcc, campusTotal.capacity), fillPct });
+  } else {
+    toast('⚠ Apps Script URL not set — adjustment not saved to Sheet');
+  }
+}
+
+// ════════════════════════════════════════════════════════
+//  REALISTIC CAMPUS TRAFFIC & PARKING SIMULATOR
+//
+//  Architecture:
+//    - All vehicles enter/exit through the Main Gate.
+//    - Two vehicle types: PARKER (finds a spot) and
+//      DROP-OFF (deposits passenger, leaves quickly).
+//    - Parkers choose a lot probabilistically based on
+//      proximity and available space, stay 5–40 min
+//      (sim-time), then exit via Main Gate.
+//    - Drop-offs stay 1–3 min then exit.
+//    - Arrival rate follows a realistic bell-curve
+//      pattern (sparse → morning rush → midday lull →
+//      afternoon rush → evening taper).
+//    - Gate counter may temporarily exceed total parked
+//      count because drop-offs inflate entries.
+//    - Every state change fires processLine() so the
+//      existing parse/save/dashboard pipeline is used
+//      exactly as it is with real hardware.
 // ════════════════════════════════════════════════════════
 
 // ── Parking area definitions ──────────────────────────
-// Only 3 specific areas produce dashboard cards:
 const SIM_AREAS = [
-  { name: 'Museum',  capacity: 6  },
-  { name: 'CH',      capacity: 4  },
-  { name: 'Loyola',  capacity: 6  },
+  { name: 'Museum', capacity: 6  },
+  { name: 'CH',     capacity: 4  },
+  { name: 'Loyola', capacity: 6  },
 ];
 
-// Live occupancy state for the 3 specific areas
-const simOccupied = [3, 2, 3];
+// Lot selection weights (proximity / preference).
+// Museum is closest to gate → highest base weight.
+const LOT_WEIGHTS = [0.45, 0.25, 0.30]; // Museum, CH, Loyola
 
-// Campus Parking = campus-wide total (sum of all 3 areas)
-// Sent separately as the overall total message
-const CAMPUS_CAPACITY = 16; // total slots across entire campus
+// Live occupancy per lot (index matches SIM_AREAS)
+const simOccupied = [0, 0, 0];
 
-let simRunning      = false;
-let simTimer        = null;      // setTimeout handle
-let simCdTimer      = null;      // setInterval for countdown bar
-let simNextArea     = 0;         // round-robin pointer
-let simFireAt       = 0;         // epoch ms when next message fires
-let simTotalMs      = 0;         // total interval ms for this round
+// Campus-wide capacity (sum of all lots)
+const CAMPUS_CAPACITY = SIM_AREAS.reduce((s, a) => s + a.capacity, 0); // 16
 
-// ── Start ──────────────────────────────────────────────
+// ── Simulation-time clock ─────────────────────────────
+// 1 real-second = SIM_SPEED sim-minutes.
+// At speed 6, a full 12-hour campus day plays in 2 min.
+let   SIM_SPEED   = 1;          // sim-minutes per real-second (1 = watchable pace)
+let   simClockMin = 7 * 60;     // campus opens at 07:00
+
+// ── Vehicle tracking ──────────────────────────────────
+let gateEntered   = 0;          // cumulative entries today
+let gateExited    = 0;          // cumulative exits today
+let dropOffsActive = 0;         // vehicles currently doing drop-off
+let vehicleSerial  = 0;         // unique ID per vehicle
+
+// Scheduled vehicle departure queue:
+//   [ { type:'park'|'dropoff', lotIdx, leaveAt (sim-min) }, … ]
+const vehicleQueue = [];
+
+// ── Simulation state flags ────────────────────────────
+let simRunning  = false;
+let simTimer    = null;   // main tick setTimeout
+let simCdTimer  = null;   // countdown bar interval
+let simFireAt   = 0;      // epoch-ms of next tick
+let simTotalMs  = 0;      // interval of current tick
+
+// ── Arrival rate model ────────────────────────────────
+// Returns expected vehicles-per-sim-minute for a given
+// time-of-day (simClockMin).  Peaks 08:00 and 14:00.
+function arrivalRate(clockMin) {
+  const h = clockMin / 60;
+  // Two Gaussian peaks: morning rush (8h) + afternoon (14h)
+  const morning   = 0.55 * Math.exp(-0.5 * Math.pow((h - 8.0) / 0.9, 2));
+  const afternoon = 0.38 * Math.exp(-0.5 * Math.pow((h - 14.0) / 1.1, 2));
+  const base      = 0.04; // trickle throughout the day
+  return Math.max(0, morning + afternoon + base);
+}
+
+// ── Weighted lot selection ────────────────────────────
+// Chooses a lot index; lots that are full are excluded.
+// Falls back to any available lot, or returns -1 if
+// campus is fully packed.
+function chooseLot() {
+  const avail = SIM_AREAS.map((a, i) => simOccupied[i] < a.capacity);
+  if (!avail.some(Boolean)) return -1; // campus full
+
+  // Build weighted list excluding full lots
+  let totalW = 0;
+  const weights = LOT_WEIGHTS.map((w, i) => {
+    const w2 = avail[i] ? w : 0;
+    totalW += w2;
+    return w2;
+  });
+
+  let r = Math.random() * totalW;
+  for (let i = 0; i < weights.length; i++) {
+    r -= weights[i];
+    if (r <= 0) return i;
+  }
+  // Fallback: pick first available
+  return avail.findIndex(Boolean);
+}
+
+// ── Fire formatted ParkNav messages ──────────────────
+// Matches the regex in processLine() exactly:
+//   /(?:Area)?ParkNav Alert:\s*(.+?)\s*Parking\s*\((\d+)\/(\d+)\)/i
+function simEmitLot(idx) {
+  const a   = SIM_AREAS[idx];
+  const msg = `ParkNav Alert: ${a.name} Parking (${simOccupied[idx]}/${a.capacity})`;
+  monLog('[SIM] → ' + msg, 'info');
+  processLine(msg);
+}
+
+function simEmitCampusTotal() {
+  const totalOcc = simOccupied.reduce((s, o) => s + o, 0);
+  const msg = `AreaParkNav Alert: Campus Parking (${totalOcc}/${CAMPUS_CAPACITY})`;
+  monLog(`[SIM] → ${msg}  [in: ${gateEntered}  out: ${gateExited}  drop-offs: ${dropOffsActive}]`, 'info');
+  processLine(msg);
+}
+
+// ── Simulate one real-second tick ────────────────────
+function simTick() {
+  if (!simRunning) return;
+
+  // Advance simulated clock
+  simClockMin += SIM_SPEED;
+  if (simClockMin >= 22 * 60) {
+    // Campus closes at 22:00 — reset to 07:00 next day
+    simClockMin    = 7 * 60;
+    gateEntered    = 0;
+    gateExited     = 0;
+    dropOffsActive = 0;
+    vehicleQueue.length = 0;           // clear stale parked vehicles from previous day
+    simOccupied.fill(0);               // reset lot counts to 0 at day start
+    monLog('[SIM] 🌙 Campus closed — new day starting at 07:00', 'warn');
+  }
+
+  const hh  = String(Math.floor(simClockMin / 60)).padStart(2, '0');
+  const mm  = String(simClockMin % 60).padStart(2, '0');
+
+  // ── Process departures scheduled for this tick ──
+  for (let i = vehicleQueue.length - 1; i >= 0; i--) {
+    const v = vehicleQueue[i];
+    if (simClockMin < v.leaveAt) continue;
+
+    vehicleQueue.splice(i, 1);
+
+    if (v.type === 'park') {
+      if (simOccupied[v.lotIdx] > 0) {
+        simOccupied[v.lotIdx]--;
+        gateExited++;
+        monLog(`[SIM] 🚗← V#${v.id} leaving ${SIM_AREAS[v.lotIdx].name} → Main Gate exit`, 'info');
+        simEmitLot(v.lotIdx);
+      }
+    } else {
+      if (dropOffsActive > 0) dropOffsActive--;
+      gateExited++;
+      monLog(`[SIM] 🚗← V#${v.id} drop-off complete → Main Gate exit`, 'info');
+    }
+  }
+
+  // ── Generate new vehicle arrivals ───────────────
+  const lambda = arrivalRate(simClockMin) * SIM_SPEED;
+  let arrivals = 0;
+  let L = Math.exp(-lambda);
+  let p = 1.0;
+  do { p *= Math.random(); arrivals++; } while (p > L);
+  arrivals = Math.max(0, arrivals - 1);
+
+  for (let k = 0; k < arrivals; k++) {
+    vehicleSerial++;
+    gateEntered++;
+    const id = vehicleSerial;
+
+    const isDropOff = Math.random() < 0.30;
+
+    if (isDropOff) {
+      dropOffsActive++;
+      const duration = 1 + Math.floor(Math.random() * 4);
+      vehicleQueue.push({ type: 'dropoff', id, leaveAt: simClockMin + duration });
+      monLog(`[SIM] 🚗→ V#${id} @ ${hh}:${mm} [DROP-OFF ~${duration} min]`, 'info');
+    } else {
+      const lotIdx = chooseLot();
+      if (lotIdx === -1) {
+        gateExited++;
+        monLog(`[SIM] 🚗⛔ V#${id} @ ${hh}:${mm} — campus FULL, turned back`, 'warn');
+      } else {
+        simOccupied[lotIdx]++;
+        const duration = 10 + Math.floor(Math.random() * 36);
+        vehicleQueue.push({ type: 'park', lotIdx, id, leaveAt: simClockMin + duration });
+        monLog(`[SIM] 🚗→ V#${id} @ ${hh}:${mm} → ${SIM_AREAS[lotIdx].name} (${duration} min)`, 'info');
+        simEmitLot(lotIdx);
+      }
+    }
+  }
+
+  // Always broadcast campus total so summary bar stays current
+  simEmitCampusTotal();
+
+  // ── Schedule next tick ──────────────────────────
+  const ms = 2500 + Math.round((Math.random() - 0.5) * 400);
+  simTotalMs = ms;
+  simFireAt  = Date.now() + ms;
+
+  simTimer = setTimeout(simTick, ms);
+
+  // Update countdown bar and sim-clock display
+  clearInterval(simCdTimer);
+  simCdTimer = setInterval(() => {
+    if (!simRunning) { clearInterval(simCdTimer); return; }
+    const remaining = Math.max(0, simFireAt - Date.now());
+    const pct = ((simTotalMs - remaining) / simTotalMs) * 100;
+    document.getElementById('countdown-fill').style.width = pct + '%';
+    const ch = String(Math.floor(simClockMin / 60)).padStart(2, '0');
+    const cm = String(simClockMin % 60).padStart(2, '0');
+    document.getElementById('countdown-lbl').textContent  = `${ch}:${cm}`;
+    document.getElementById('sim-clock-lbl').textContent  = `🕐 ${ch}:${cm}`;
+  }, 250);
+}
+
+// ── Start ─────────────────────────────────────────────
 function simStart() {
   if (simRunning) return;
   simRunning = true;
@@ -1111,11 +1803,13 @@ function simStart() {
   document.getElementById('sim-status-dot').classList.add('running');
   document.getElementById('sim-status-lbl').classList.add('running');
   document.getElementById('sim-status-lbl').textContent = 'Running';
-  monLog('[SIM] Arduino simulator started — sending every 3–10 s', 'info');
-  simScheduleNext();
+  monLog('[SIM] Realistic campus traffic simulator started', 'info');
+  monLog(`[SIM] Lots: Museum(6) CH(4) Loyola(6)  Campus cap: ${CAMPUS_CAPACITY}`, 'info');
+  monLog(`[SIM] Drop-off rate: 30%  Parker rate: 70%  Speed: ${SIM_SPEED}× real-time`, 'info');
+  simTick();
 }
 
-// ── Stop ───────────────────────────────────────────────
+// ── Stop ──────────────────────────────────────────────
 function simStop() {
   if (!simRunning) return;
   simRunning = false;
@@ -1128,89 +1822,140 @@ function simStop() {
   document.getElementById('sim-status-lbl').textContent = 'Stopped';
   document.getElementById('countdown-fill').style.width = '0%';
   document.getElementById('countdown-lbl').textContent  = '—';
+  document.getElementById('sim-clock-lbl').textContent  = '🕐 —:—';
   monLog('[SIM] Simulator stopped.', 'warn');
 }
 
-// ── Fire once (random specific area) ──────────────────
+// ── Fire Once — manual single vehicle event ───────────
+// Injects one random vehicle arrival right now (does not
+// start the auto cycle).
 function simFireOnce() {
-  const idx = Math.floor(Math.random() * SIM_AREAS.length); // 0-2 only
-  simFireArea(idx);
+  vehicleSerial++;
+  gateEntered++;
+  const id        = vehicleSerial;
+  const isDropOff = Math.random() < 0.30;
+
+  if (isDropOff) {
+    dropOffsActive++;
+    const duration = 1 + Math.floor(Math.random() * 4);
+    vehicleQueue.push({ type: 'dropoff', id, leaveAt: simClockMin + duration });
+    monLog(`[SIM] ↯ Manual fire — V#${id} DROP-OFF entered Main Gate`, 'info');
+  } else {
+    const lotIdx = chooseLot();
+    if (lotIdx === -1) {
+      gateExited++;
+      monLog(`[SIM] ↯ Manual fire — V#${id} entered but campus FULL, turned back`, 'warn');
+    } else {
+      simOccupied[lotIdx]++;
+      const duration = 10 + Math.floor(Math.random() * 36);
+      vehicleQueue.push({ type: 'park', lotIdx, id, leaveAt: simClockMin + duration });
+      monLog(`[SIM] ↯ Manual fire — V#${id} parked at ${SIM_AREAS[lotIdx].name}`, 'info');
+      simEmitLot(lotIdx);
+    }
+  }
+  simEmitCampusTotal();
 }
 
-// ── Fire a specific area immediately ──────────────────
+// ── Manual fire per specific area (UI buttons) ────────
+// Forces one parking entry into the specified lot if
+// space is available, else logs a full-lot warning.
 function simFireArea(idx) {
-  simUpdateOccupancy(idx);
-  const msg = simBuildMessage(idx);
-  monLog('[SIM] → ' + msg, 'info');
-  processLine(msg);   // ← feeds directly into the existing parse+save pipeline
+  vehicleSerial++;
+  gateEntered++;
+  const id = vehicleSerial;
+  const a  = SIM_AREAS[idx];
 
-  // Also send the Campus total message (sum of all 3 specific areas)
-  simFireCampusTotal();
+  if (simOccupied[idx] >= a.capacity) {
+    gateExited++;
+    monLog(`[SIM] ↯ Manual → ${a.name}: LOT FULL — V#${id} turned away`, 'warn');
+  } else {
+    simOccupied[idx]++;
+    const duration = 10 + Math.floor(Math.random() * 36);
+    vehicleQueue.push({ type: 'park', lotIdx: idx, id, leaveAt: simClockMin + duration });
+    monLog(`[SIM] ↯ Manual → V#${id} parked at ${a.name} (${simOccupied[idx]}/${a.capacity})`, 'info');
+    simEmitLot(idx);
+  }
+  simEmitCampusTotal();
 }
 
-// ── Fire the Campus-wide total message ────────────────
+// ── Manual fire campus total ──────────────────────────
 function simFireCampusTotal() {
-  const totalOcc = simOccupied.reduce((s, o) => s + o, 0);
-  const totalAvail = Math.max(0, CAMPUS_CAPACITY - totalOcc);
-  const campusMsg = `AreaParkNav Alert: Campus Parking (${totalOcc}/${CAMPUS_CAPACITY})`;
-  monLog('[SIM] → ' + campusMsg, 'info');
-  processLine(campusMsg);
+  simEmitCampusTotal();
 }
 
-// ── Schedule next automatic fire ──────────────────────
-function simScheduleNext() {
-  if (!simRunning) return;
-  // Random interval 3–10 seconds
-  const ms = Math.floor(Math.random() * (10000 - 3000 + 1)) + 3000;
-  simTotalMs = ms;
-  simFireAt  = Date.now() + ms;
-
-  simTimer = setTimeout(() => {
-    if (!simRunning) return;
-    simFireArea(simNextArea);
-    simNextArea = (simNextArea + 1) % SIM_AREAS.length;
-    simScheduleNext();
-  }, ms);
-
-  // Countdown bar update every 250 ms
-  clearInterval(simCdTimer);
-  simCdTimer = setInterval(() => {
-    if (!simRunning) { clearInterval(simCdTimer); return; }
-    const remaining = Math.max(0, simFireAt - Date.now());
-    const pct       = ((simTotalMs - remaining) / simTotalMs) * 100;
-    const secs      = (remaining / 1000).toFixed(1);
-    document.getElementById('countdown-fill').style.width = pct + '%';
-    document.getElementById('countdown-lbl').textContent  = secs + ' s';
-  }, 250);
-}
-
-// ── Occupancy simulation (same logic as the .ino file) ─
-function simUpdateOccupancy(idx) {
-  const cap  = SIM_AREAS[idx].capacity;
-  const roll = Math.floor(Math.random() * 10);
-  if      (roll < 3) simOccupied[idx] = Math.min(simOccupied[idx] + 1, cap);
-  else if (roll < 6) simOccupied[idx] = Math.max(simOccupied[idx] - 1, 0);
-  else if (roll === 6) simOccupied[idx] = Math.min(simOccupied[idx] + 2, cap);
-  else if (roll === 7) simOccupied[idx] = Math.max(simOccupied[idx] - 2, 0);
-  // roll 8–9 → no change
-}
-
-// ── Build message string matching the regex exactly ───
-// Regex in processLine(): /(?:Area)?ParkNav Alert:\s*(.+?)\s*Parking\s*\((\d+)\/(\d+)\)/i
-function simBuildMessage(idx) {
-  const area = SIM_AREAS[idx];
-  return `ParkNav Alert: ${area.name} Parking (${simOccupied[idx]}/${area.capacity})`;
-}
-
-// ── Interval label (slider is decorative — interval is always random 3-10s) ─
+// ── Interval label — slider now controls SIM_SPEED ───
+// Slider range: min=1 max=10 maps to SIM_SPEED 1–10
 function simUpdateInterval(val) {
-  document.getElementById('sim-interval-lbl').textContent = '3 – 10 s (random)';
+  const v = parseInt(val, 10);
+  SIM_SPEED = v;
+  let label;
+  if      (v <= 1)  label = `${v}× — Very Slow`;
+  else if (v <= 3)  label = `${v}× — Slow`;
+  else if (v <= 5)  label = `${v}× — Normal`;
+  else if (v <= 7)  label = `${v}× — Fast`;
+  else              label = `${v}× — Very Fast`;
+  document.getElementById('sim-interval-lbl').textContent = label;
 }
 
-// Auto-start simulator on page load so the dashboard is never empty
+// Simulator starts stopped by default (manual start required)
 window.addEventListener('load', () => {
-  setTimeout(simStart, 600);
+  // Simulator is stopped by default — press ▶ Start Auto to begin
+  document.getElementById('btn-sim-stop').disabled = true;
+  // Focus password input
+  setTimeout(()=>{ const i=document.getElementById('pw-input'); if(i) i.focus(); }, 200);
 });
+
+// ════════════════════════════════════════════════════════
+//  PASSWORD GATE
+// ════════════════════════════════════════════════════════
+const ADMIN_PASSWORD = 'brian';
+
+function checkPassword() {
+  const input = document.getElementById('pw-input');
+  const errEl = document.getElementById('pw-error');
+  const val   = input.value;
+
+  if (val === ADMIN_PASSWORD) {
+    document.getElementById('pw-backdrop').classList.remove('open');
+    errEl.textContent = '';
+    input.value = '';
+    toast('✓ Welcome to ParkNav Admin Dashboard');
+  } else {
+    errEl.textContent = 'Incorrect password. Please try again.';
+    input.classList.add('pw-error');
+    input.value = '';
+    setTimeout(() => {
+      input.classList.remove('pw-error');
+      input.focus();
+    }, 400);
+  }
+}
+
+// ════════════════════════════════════════════════════════
+//  HELP MODAL
+// ════════════════════════════════════════════════════════
+function openHelp() {
+  document.getElementById('help-backdrop').classList.add('open');
+}
+function closeHelpBtn() {
+  document.getElementById('help-backdrop').classList.remove('open');
+}
+function closeHelp(e) {
+  // Close only if clicking the backdrop itself (not the modal content)
+  if (e.target === document.getElementById('help-backdrop')) closeHelpBtn();
+}
+
+// ════════════════════════════════════════════════════════
+//  THEME TOGGLE
+// ════════════════════════════════════════════════════════
+let isLightMode = false;
+function toggleTheme() {
+  isLightMode = !isLightMode;
+  document.body.classList.toggle('light-mode', isLightMode);
+  const btn = document.getElementById('fab-gear');
+  btn.title = isLightMode ? 'Switch to Dark Mode' : 'Switch to Light Mode';
+  toast(isLightMode ? '☀ Light mode enabled' : '🌙 Dark mode enabled');
+}
 </script>
 </body>
 </html>
