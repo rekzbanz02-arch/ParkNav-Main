@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>ParkNav — Main Control</title>
+<title>XUrPark — Main Control</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -782,7 +782,7 @@ body.light-mode .xu-campus-heading { color:#c8941a; }
 <div class="modal-backdrop open" id="pw-backdrop">
   <div class="pw-modal">
     <div class="pw-logo-badge">P</div>
-    <div class="pw-title">ParkNav Admin</div>
+    <div class="pw-title">XUrPark Admin</div>
     <div class="pw-subtitle">Xavier University · Parking System<br>Enter your password to continue.</div>
     <input class="pw-input" id="pw-input" type="password" placeholder="••••••••"
       maxlength="20" autocomplete="off"
@@ -799,7 +799,7 @@ body.light-mode .xu-campus-heading { color:#c8941a; }
     <div class="help-header">
       <div class="help-header-icon">❓</div>
       <div class="help-header-text">
-        <h2>ParkNav Help Guide</h2>
+        <h2>XUrPark Help Guide</h2>
         <p>XAVIER UNIVERSITY · ATENEO DE CAGAYAN · ADMIN DASHBOARD</p>
       </div>
       <button class="help-close" aria-label="Close help guide" onclick="closeHelpBtn()">✕</button>
@@ -1919,7 +1919,7 @@ function checkPassword() {
     document.getElementById('pw-backdrop').classList.remove('open');
     errEl.textContent = '';
     input.value = '';
-    toast('✓ Welcome to ParkNav Admin Dashboard');
+    toast('✓ Welcome to XUrPark Admin Dashboard');
   } else {
     errEl.textContent = 'Incorrect password. Please try again.';
     input.classList.add('pw-error');
