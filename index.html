@@ -18,8 +18,8 @@
   --border2:  #283d8f;
   /* XU Text */
   --text:     #e8ecf8;
-  --muted:    #6a7cb5;
-  --dim:      #3d4f8a;
+  --muted:    #8e9fd4;
+  --dim:      #6070a8;
   /* XU Gold / Accent */
   --accent:   #f0b429;
   --accent-l: #ffd166;
@@ -825,7 +825,7 @@ body.light-mode .xu-campus-heading { color:#c8941a; }
         <div class="help-section-title"><span class="help-section-icon">✎</span> Manual Count Adjustment (±)</div>
         <div class="help-item"><div class="help-bullet">+</div><div>Use the <span class="help-tag">+</span> button on a card or the Campus Total summary box to <strong>increase</strong> the occupied count by 1 — e.g., a car entered but the sensor missed it.</div></div>
         <div class="help-item"><div class="help-bullet">−</div><div>Use the <span class="help-tag">−</span> button to <strong>decrease</strong> the occupied count by 1 — e.g., a car left without triggering the sensor.</div></div>
-        <div class="help-item"><div class="help-bullet">✦</div><div>Every adjustment is immediately sent to Google Sheets with a <span class="help-tag">[MANUAL ADJ]</span> tag so you have a full audit trail.</div></div>
+        <div class="help-item"><div class="help-bullet">✦</div><div>Every adjustment is immediately sent to Cloud with a <span class="help-tag">[MANUAL ADJ]</span> tag so you have a full audit trail.</div></div>
         <div class="help-note">⚠ Adjustments clamp within 0 and the lot's maximum capacity — they cannot go negative or exceed the limit.</div>
       </div>
 
@@ -839,10 +839,10 @@ body.light-mode .xu-campus-heading { color:#c8941a; }
       </div>
 
       <div class="help-section">
-        <div class="help-section-title"><span class="help-section-icon">📋</span> Message Log & Google Sheets</div>
-        <div class="help-item"><div class="help-bullet">✦</div><div>Every parking update is automatically saved to the connected Google Sheet via Apps Script. The log refreshes every 30 seconds.</div></div>
+        <div class="help-section-title"><span class="help-section-icon">📋</span> Message Log & Clouds</div>
+        <div class="help-item"><div class="help-bullet">✦</div><div>Every parking update is automatically saved to the connected Cloud. The log refreshes every 30 seconds.</div></div>
         <div class="help-item"><div class="help-bullet">✦</div><div>Use the <span class="help-tag">Search</span> box to filter log entries by keyword. Use the filter buttons (All / Museum / CH / Loyola / Campus Total) to narrow by area.</div></div>
-        <div class="help-item"><div class="help-bullet">✦</div><div>Click <span class="help-tag">↻ Refresh Log</span> to manually pull the latest data from Google Sheets at any time.</div></div>
+        <div class="help-item"><div class="help-bullet">✦</div><div>Click <span class="help-tag">↻ Refresh Log</span> to manually pull the latest data from Cloud at any time.</div></div>
         <div class="help-item"><div class="help-bullet">✦</div><div>Log columns: <em>Message · Date · Time · Area · Occupied · Capacity · Free · Status · Fill %</em>.</div></div>
       </div>
 
@@ -927,7 +927,7 @@ body.light-mode .xu-campus-heading { color:#c8941a; }
     <div class="sec-head"><h2>Parking Areas</h2><div class="sec-badge" id="area-count-badge">0 AREAS</div></div>
     <div id="dashboard">
       <div data-placeholder style="grid-column:1/-1;text-align:center;padding:50px 20px;color:var(--muted);font-family:var(--mono);font-size:13px;">
-        📡 Connect Arduino or wait for data from Google Sheet…
+        📡 Connect Arduino or wait for data from Cloud…
       </div>
     </div>
   </div>
@@ -1035,7 +1035,7 @@ body.light-mode .xu-campus-heading { color:#c8941a; }
           </tr>
         </thead>
         <tbody id="log-body">
-          <tr class="empty-row"><td colspan="9">No data yet. Connect to Google Sheet to load log.</td></tr>
+          <tr class="empty-row"><td colspan="9">No data yet. Connect to Cloud to load log.</td></tr>
         </tbody>
       </table>
     </div>
